@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MintOS 11 — Linux Mint & Windows 11 Hybrid</title>
+    <title>PutterOS — Ultimate Gaming & Dev Workspace</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- ГИБРИДНЫЙ РАБОЧИЙ СТОЛ MINTOS -->
+    <!-- РАБОЧИЙ СТОЛ МОЩНОГО ПК -->
     <div class="desktop" id="desktop-grid">
         <div class="shortcut" id="shortcut-explorer">
             <svg viewBox="0 0 48 48"><path d="M40,12H24l-4-4H8C5.8,8,4,9.8,4,12v24c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z" fill="#87cf3e"/><path d="M40,16H12c-2.2,0-4,1.8-4,4v16c0,2.2,1.8,4,4,4h28c2.2,0,4-1.8,4-4V20C44,18.2,42.2,16,40,16z" fill="#9be74c"/></svg>
-            Файлы (Nemo)
+            Мой Компьютер
         </div>
         <div class="shortcut" id="shortcut-terminal">
             <svg viewBox="0 0 48 48"><rect x="4" y="8" width="40" height="32" rx="4" fill="#333"/><path d="M12 18l6 6-6 6M20 28h10" stroke="#87cf3e" stroke-width="4" stroke-linecap="round" fill="none"/></svg>
-            Terminal
+            Консоль Bash
         </div>
         <div class="shortcut" id="shortcut-notepad">
             <svg viewBox="0 0 48 48"><path d="M36,4H12C9.8,4,8,5.8,8,8v32c0,2.2,1.8,4,4,4h24c2.2,0,4-1.8,4-4V8C40,5.8,38.2,4,36,4z" fill="#0078D4"/><path d="M14,12h20v4H14V12z M14,20h20v4H14V20z M14,28h14v4H14V28z" fill="#FFF"/></svg>
-            Редактор (Xed)
+            Кодинг & Текст
         </div>
         <div class="shortcut" id="shortcut-browser">
             <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#0288D1"/><circle cx="24" cy="24" r="8" fill="#FFF"/><path d="M24,4C13,4,4,13,4,24h8c0-6.6,5.4-12,12-12V4z" fill="#87cf3e"/><path d="M44,24c0,11-9,20-20,20v-8c6.6,0,12-5.4,12-12H44z" fill="#FBC02D"/></svg>
-            Браузер Proxy
+            Браузер (Видео/Поиск)
         </div>
-        <div class="shortcut" id="shortcut-store">
-            <svg viewBox="0 0 48 48"><path d="M38 10H10c-2.2 0-4 1.8-4 4v24c0 2.2 1.8 4 4 4h28c2.2 0 4-1.8 4-4V14c0-2.2-1.8-4-4-4z" fill="#2f343f"/><path d="M24 4c-4.4 0-8 3.6-8 8h16c0-4.4-3.6-8-8-8z" fill="#87cf3e"/></svg>
-            Менеджер Программ
+        <div class="shortcut" id="shortcut-cs">
+            <svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="6" fill="#1b1e22"/><circle cx="24" cy="24" r="14" stroke="#e54c4c" stroke-width="3" fill="none"/><path d="M16 24h16M24 16v16" stroke="#e54c4c" stroke-width="2"/></svg>
+            Counter-Strike 1.6
+        </div>
+        <div class="shortcut" id="shortcut-mc">
+            <span style="font-size:36px;">📦</span><br>Minecraft 3D
         </div>
         <div class="shortcut" id="shortcut-calc">
             <svg viewBox="0 0 48 48"><rect x="6" y="4" width="36" height="40" rx="4" fill="#434855"/><rect x="10" y="8" width="28" height="10" rx="2" fill="#21252b"/><path d="M14 26h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4zm-16 8h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4z" fill="#fff"/></svg>
@@ -39,46 +42,44 @@
         </div>
     </div>
 
-    <!-- МОБИЛЬНАЯ ШТОРКА УПРАВЛЕНИЯ И ЖИВЫХ СТАТУСОВ (ФИЧА 1) -->
+    <!-- ШТОРКА ЖИВОГО МОНИТОРИНГА ПК -->
     <div id="quick-settings" class="quick-settings-panel">
-        <h3>Панель управления MintOS</h3>
+        <h3>Диспетчер ресурсов Путтера</h3>
         <div class="settings-status-box">
-            <div id="battery-status">🔋 Батарея: Загрузка...</div>
-            <div id="ram-status">📊 ОЗУ системы: 512 MB / 16 GB</div>
+            <div id="battery-status">🔋 Статус питания: Ок</div>
+            <div id="ram-status">⚡ Загрузка ОЗУ: 1.2 GB / 16 GB (Всё летает)</div>
         </div>
-        <div class="settings-section-title">Персонализация (Обои и Темы)</div>
+        <div class="settings-section-title">Кастомизация стола</div>
         <div class="theme-buttons">
-            <button class="theme-btn" data-bg="mint">🌿 Mint Green</button>
-            <button class="theme-btn" data-bg="dark">🖤 Cyber Dark</button>
-            <button class="theme-btn" data-bg="win11">🔷 Windows 11</button>
+            <button class="theme-btn" data-bg="mint">🌿 Mint Classic</button>
+            <button class="theme-btn" data-bg="dark">🖤 Cyberpunk</button>
+            <button class="theme-btn" data-bg="win11">🔷 Neon Win11</button>
         </div>
     </div>
 
-    <!-- МЕНЮ СТАРТ -->
+    <!-- ГИБРИДНОЕ МЕНЮ СТАРТ -->
     <div id="start-menu" class="start-menu">
-        <input type="text" class="start-search" placeholder="Поиск приложений, файлов и команд (apt)...">
+        <input type="text" class="start-search" placeholder="Быстрый запуск программ и скриптов...">
         <div class="start-content-layout">
             <div class="start-mint-sidebar">
-                <div class="mint-cat-item active" data-cat="all">💚 Все</div>
+                <div class="mint-cat-item active" data-cat="all">🎮 Игры & Работы</div>
                 <div class="mint-cat-item" data-cat="system">⚙️ Система</div>
-                <div class="mint-cat-item" data-cat="office">📝 Офис</div>
-                <div class="mint-cat-item" data-cat="games">🎮 Игры</div>
             </div>
             <div class="start-apps-grid" id="start-apps-container">
                 <div class="start-app-item" id="start-app-explorer"><div>📂</div><span>Проводник</span></div>
-                <div class="start-app-item" id="start-app-terminal"><div>💻</div><span>Терминал</span></div>
-                <div class="start-app-item" id="start-app-notepad"><div>📝</div><span>Редактор Xed</span></div>
-                <div class="start-app-item" id="start-app-browser"><div>🌐</div><span>Браузер Proxy</span></div>
-                <div class="start-app-item" id="start-app-store"><div>🛍️</div><span>Менеджер Программ</span></div>
+                <div class="start-app-item" id="start-app-terminal"><div>💻</div><span>Консоль Bash</span></div>
+                <div class="start-app-item" id="start-app-notepad"><div>📝</div><span>Кодинг (Xed)</span></div>
+                <div class="start-app-item" id="start-app-browser"><div>🌐</div><span>Браузер Видео</span></div>
+                <div class="start-app-item" id="start-app-cs"><div>🔫</div><span>CS 1.6</span></div>
                 <div class="start-app-item" id="start-app-calc"><div>🧮</div><span>Калькулятор</span></div>
             </div>
         </div>
         <div class="start-footer">
-            <div class="start-user"><div class="user-avatar">M</div><span>Пользователь Mint</span></div>
-            <div class="power-btn" onclick="alert('Завершение сессии MintOS...')">⏻</div>
+            <div class="start-user"><div class="user-avatar">P</div><span>Putter User</span></div>
+            <div class="power-btn" onclick="alert('Перезагрузка Путтера...')">⏻</div>
         </div>
     </div>
-    <!-- ОКНО: ПРОВОДНИК NEMO (ФИЧА 2) -->
+    <!-- ОКНО: ПРОВОДНИК NEMO -->
     <div id="explorer" class="window">
         <div class="window-header" id="header-explorer">
             <div class="window-title">📂 Файловый менеджер Nemo</div>
@@ -107,10 +108,10 @@
         </div>
     </div>
 
-    <!-- ОКНО: ТЕКСТОВЫЙ РЕДАКТОР XED -->
+    <!-- ОКНО: РЕДАКТОР КОДА И СРЕДА РАЗРАБОТКИ XED -->
     <div id="notepad" class="window">
         <div class="window-header" id="header-notepad">
-            <div class="window-title" id="notepad-title">📝 Текстовый редактор Xed</div>
+            <div class="window-title" id="notepad-title">📝 Редактор кода Xed</div>
             <div class="window-controls">
                 <button class="control-btn max-btn" data-window="notepad">🗖</button>
                 <button class="control-btn close-btn" id="close-notepad">✕</button>
@@ -119,18 +120,18 @@
         <div class="window-body">
             <div class="notepad-container">
                 <div class="notepad-menu">
-                    <span id="btn-save-note">💾 Сохранить файл</span>
-                    <span id="btn-run-code" style="margin-left:15px; color:#87cf3e; display:none; cursor:pointer; font-weight:bold;">▶ Компилировать HTML</span>
+                    <span id="btn-save-note">💾 Сохранить скрипт / файл</span>
+                    <span id="btn-run-code" style="margin-left:15px; color:#87cf3e; display:none; cursor:pointer; font-weight:bold;">▶ Запустить HTML-код</span>
                 </div>
-                <textarea id="notepadText" class="notepad-textarea" placeholder="Напишите текст или HTML-код здесь..."></textarea>
+                <textarea id="notepadText" class="notepad-textarea" placeholder="Пиши свой код (HTML, CSS, JS) или текст здесь..."></textarea>
             </div>
         </div>
     </div>
 
-    <!-- ОКНО: ВЕБ-ПРОСМОТРЩИК (WEB VIEWER) FOR HTML -->
+    <!-- ОКНО: РЕЗУЛЬТАТ КОМПИЛЯЦИИ КОДА -->
     <div id="web-viewer" class="window" style="width:500px; height:400px;">
         <div class="window-header" id="header-web-viewer">
-            <div class="window-title">🌐 Инспектор кода / Просмотр HTML</div>
+            <div class="window-title" id="web-viewer-title">🌐 Результат компиляции кода</div>
             <div class="window-controls">
                 <button class="control-btn max-btn" data-window="web-viewer">🗖</button>
                 <button class="control-btn close-btn" id="close-web-viewer">✕</button>
@@ -141,10 +142,10 @@
         </div>
     </div>
 
-    <!-- ОКНО: ТЕРМИНАЛ LINUX (BASH) -->
+    <!-- ОКНО: МОЩНАЯ КОНСОЛЬ BASH -->
     <div id="terminal" class="window">
         <div class="window-header" id="header-terminal">
-            <div class="window-title">💻 Терминал Mint (bash)</div>
+            <div class="window-title">💻 Терминал Путтера (bash)</div>
             <div class="window-controls">
                 <button class="control-btn max-btn" data-window="terminal">🗖</button>
                 <button class="control-btn close-btn" id="close-terminal">✕</button>
@@ -153,21 +154,68 @@
         <div class="window-body">
             <div class="terminal-container" id="terminal-click-zone">
                 <div id="terminal-history" class="terminal-history">
-                    <div>Добро пожаловать в MintOS 11 Bash Core!</div>
+                    <div>Добро пожаловать в PutterOS Bash Engine!</div>
                     <div>Доступны команды: <b>help</b>, <b>ls</b>, <b>mkdir</b>, <b>rm [файл]</b>, <b>clear</b>, <b>neofetch</b>.</div>
                 </div>
                 <div class="terminal-input-line">
-                    <span class="terminal-prompt">user@mintos11:~$</span>
+                    <span class="terminal-prompt">user@putter_pc:~$</span>
                     <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off">
                 </div>
             </div>
         </div>
     </div>
+        <!-- ОКНО: УМНЫЙ ПРОКСИ-БРАУЗЕР (ВЫВОД САЙТОВ И ВИДЕО) -->
+    <div id="browser" class="window">
+        <div class="window-header" id="header-browser">
+            <div class="window-title">🌐 Edge Proxy Pro (С поддержкой Видео)</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="browser">🗖</button>
+                <button class="control-btn close-btn" id="close-browser">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="browser-container">
+                <div class="browser-bar">
+                    <input type="text" id="urlInput" class="browser-input" placeholder="Введите поисковый запрос (ютуб, гугл, вк, вики) или адрес сайта...">
+                    <button class="browser-btn" id="btnNavigate">Перейти</button>
+                </div>
+                <iframe id="browserFrame" class="browser-iframe"></iframe>
+            </div>
+        </div>
+    </div>
 
-    <!-- ОКНО: КАЛЬКУЛЯТОР MINT CALC (ФИЧА 4) -->
+    <!-- ОКНО: COUNTER-STRIKE 1.6 -->
+    <div id="cs" class="window">
+        <div class="window-header" id="header-cs">
+            <div class="window-title">🔫 Counter-Strike 1.6 — Игровой сервер</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="cs">🗖</button>
+                <button class="control-btn close-btn" id="close-cs">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <iframe class="browser-iframe" src="https://play-cs.com"></iframe>
+        </div>
+    </div>
+
+    <!-- ОКНО: MINECRAFT 3D (EAGLERCRAFT) -->
+    <div id="app-mc" class="window">
+        <div class="window-header" id="header-mc">
+            <div class="window-title">📦 Minecraft 1.5.2 Java Web Core</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="app-mc">🗖</button>
+                <button class="control-btn close-btn" id="close-mc">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <iframe class="browser-iframe" src="https://eaglercraft.com"></iframe>
+        </div>
+    </div>
+
+    <!-- ОКНО: БЫСТРЫЙ КАЛЬКУЛЯТОР -->
     <div id="calc" class="window" style="width:280px; height:380px;">
         <div class="window-header" id="header-calc">
-            <div class="window-title">🧮 Mint Calc</div>
+            <div class="window-title">🧮 Калькулятор</div>
             <div class="window-controls">
                 <button class="control-btn close-btn" id="close-calc">✕</button>
             </div>
@@ -196,3 +244,47 @@
             </div>
         </div>
     </div>
+
+    <!-- ОКНО: СИСТЕМНАЯ КОРЗИНА -->
+    <div id="trash-window" class="window">
+        <div class="window-header" id="header-trash">
+            <div class="window-title">🗑️ Корзина</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="trash-window">🗖</button>
+                <button class="control-btn close-btn" id="close-trash-window">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="explorer-toolbar">
+                <button id="btn-empty-trash" style="background:#e54c4c; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">🧹 Очистить корзину</button>
+            </div>
+            <div id="trashFileView" class="file-grid"></div>
+        </div>
+    </div>
+
+    <!-- ИГРОВАЯ ПАНЕЛЬ ЗАДАЧ CINNAMON / WIN11 -->
+    <div class="taskbar">
+        <div class="taskbar-icons" id="taskbar-icons-container">
+            <div class="taskbar-icon" id="start-menu-btn">
+                <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#87cf3e"/><path d="M16 16v16h8a8 8 0 0 0 0-16zm4 4h4a4 4 0 0 1 0 8h-4z" fill="#fff"/></svg>
+            </div>
+            <div class="taskbar-icon" id="taskbar-explorer">📂</div>
+            <div class="taskbar-icon" id="taskbar-terminal">💻</div>
+            <div class="taskbar-icon" id="taskbar-notepad">📝</div>
+            <div class="taskbar-icon" id="taskbar-browser">🌐</div>
+            <div class="taskbar-icon" id="taskbar-cs">🔫</div>
+            <div class="taskbar-icon" id="taskbar-calc">🧮</div>
+        </div>
+        
+        <div class="system-tray">
+            <div class="tray-clock" id="system-clock" title="Дата и время">00:00:00</div>
+        </div>
+    </div>
+
+    <!-- ПОДКЛЮЧЕНИЕ СИСТЕМНЫХ КОРОВ -->
+    <script src="fs-core.js"></script>
+    <script src="wm-core.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
+
