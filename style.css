@@ -1,0 +1,163 @@
+* { 
+    box-sizing: border-box; margin: 0; padding: 0; user-select: none; 
+    -webkit-user-select: none; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
+body { 
+    background: radial-gradient(circle at 50% 30%, #2b3a22 0%, #141910 60%, #080a06 100%);
+    height: 100vh; overflow: hidden; position: relative;
+    transition: background 0.3s ease;
+}
+.desktop { 
+    height: calc(100vh - 48px); padding: 15px; display: flex; 
+    flex-direction: column; gap: 15px; align-content: flex-start; flex-wrap: wrap; 
+}
+.shortcut { 
+    width: 85px; text-align: center; cursor: pointer; color: white; 
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8); font-size: 11px; padding: 6px;
+    transition: background 0.15s, border-radius 0.15s;
+}
+.shortcut svg { width: 42px; height: 40px; display: block; margin: 0 auto 6px; }
+.shortcut:hover, .shortcut:active { background: rgba(135, 207, 62, 0.2); border-radius: 6px; }
+
+/* ГИБРИДНЫЙ ДИЗАЙН ОКОН (РАЗМЫТИЕ WIN11 + ЦВЕТА LINUX MINT) */
+.window { 
+    position: absolute; background: rgba(31, 35, 43, 0.93); backdrop-filter: blur(25px); 
+    -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.08); 
+    border-radius: 8px; box-shadow: 0 12px 40px rgba(0,0,0,0.5); 
+    display: none; flex-direction: column; overflow: hidden; z-index: 10; 
+    transition: width 0.1s ease, height 0.1s ease, top 0.1s ease, left 0.1s ease;
+    width: 640px; height: 420px; top: 10%; left: 15%;
+}
+.window.maximized {
+    width: 100% !important; height: calc(100vh - 48px) !important;
+    top: 0 !important; left: 0 !important; border-radius: 0 !important;
+}
+.window-header { 
+    background: rgba(47, 52, 63, 0.8); padding: 10px 14px; display: flex; 
+    justify-content: space-between; align-items: center; cursor: move; touch-action: none;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.window-title { font-size: 13px; font-weight: 600; color: #dfdbd2; }
+.window-controls { display: flex; gap: 8px; align-items: center; }
+.control-btn { 
+    border: none; background: transparent; cursor: pointer; font-size: 11px; 
+    color: #dfdbd2; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 4px;
+}
+.control-btn:hover { background: rgba(255,255,255,0.08); }
+.close-btn:hover { background: #e54c4c; color: white; }
+.window-body { flex: 1; padding: 0; background: #2f343f; position: relative; }
+
+/* ФАЙЛОВЫЙ МЕНЕДЖЕР NEMO */
+.explorer-layout { display: flex; height: 100%; }
+.sidebar { width: 160px; background: #21252b; border-right: 1px solid #1c1f24; padding: 8px; display: flex; flex-direction: column; gap: 4px; font-size: 12px; }
+.sidebar-item { padding: 8px; border-radius: 4px; cursor: pointer; color: #cfced6; }
+.sidebar-item:hover { background: rgba(255,255,255,0.04); }
+.sidebar-item.active { background: #87cf3e; font-weight: 600; color: #111; }
+.explorer-main { flex: 1; display: flex; flex-direction: column; background: #2f343f; }
+.explorer-toolbar { padding: 8px; background: #2b303b; border-bottom: 1px solid #1c1f24; }
+.explorer-toolbar button { padding: 4px 10px; font-size: 12px; cursor: pointer; background: #383c4a; border: 1px solid #434855; color: #fff; border-radius: 4px; }
+.explorer-toolbar button:hover { background: #434855; }
+.file-grid { flex: 1; padding: 12px; display: flex; gap: 15px; align-content: flex-start; flex-wrap: wrap; overflow-y: auto; }
+.file-item { width: 70px; text-align: center; cursor: pointer; font-size: 11px; color: #dfdbd2; word-break: break-all; padding: 4px; border-radius: 4px; position: relative; }
+.file-item:hover { background: rgba(255,255,255,0.05); }
+
+/* Кнопка удаления файла */
+.file-delete-btn { position: absolute; top: 2px; right: 2px; background: #e54c4c; color: white; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; cursor: pointer; display: none; align-items: center; justify-content: center; line-height: 1; }
+.file-item:hover .file-delete-btn { display: flex; }
+
+/* РЕДАКТОР XED */
+.notepad-container { display: flex; flex-direction: column; height: 100%; }
+.notepad-menu { background: #21252b; padding: 6px 12px; border-bottom: 1px solid #1c1f24; font-size: 12px; color: #87cf3e; cursor: pointer; font-weight: 600; }
+.notepad-textarea { flex: 1; width: 100%; height: 100%; padding: 12px; border: none; resize: none; outline: none; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; background: #2f343f; color: #dfdbd2; user-select: text; -webkit-user-select: text; }
+/* НАСТОЯЩИЙ ЛИНУКС ТЕРМИНАЛ MINT (ЧЕРНО-ЗЕЛЕНЫЙ) */
+.terminal-container { 
+    display: flex; flex-direction: column; height: 100%; background: #141414; 
+    padding: 12px; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; color: #f0f0f0; 
+    cursor: text; overflow: hidden;
+}
+.terminal-history { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 4px; white-space: pre-wrap; word-break: break-all; user-select: text; -webkit-user-select: text; }
+.terminal-input-line { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+.terminal-prompt { color: #87cf3e; font-weight: bold; white-space: nowrap; }
+.terminal-input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: inherit; user-select: text; -webkit-user-select: text; }
+
+/* ВЕБ-ПРОСМОТРЩИК (WEB VIEWER) И БРАУЗЕР */
+.browser-container { display: flex; flex-direction: column; height: 100%; background: #2f343f; }
+.browser-bar { background: #21252b; padding: 8px; display: flex; gap: 6px; border-bottom: 1px solid #1c1f24; }
+.browser-input { flex: 1; padding: 6px 12px; border: 1px solid #3c424f; border-radius: 4px; font-size: 13px; background: #2f343f; color: #fff; outline: none; }
+.browser-btn { padding: 6px 14px; background: #87cf3e; color: #111; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; }
+.browser-btn:hover { background: #9be74c; }
+.browser-iframe { width: 100%; height: 100%; border: none; background: white; }
+
+/* ИНТЕРФЕЙС КАЛЬКУЛЯТОРА MINT CALC */
+.calc-container { display: flex; flex-direction: column; height: 100%; background: #21252b; padding: 12px; gap: 10px; }
+.calc-display { width: 100%; background: #141414; border: 1px solid #3c424f; border-radius: 6px; padding: 12px; color: #87cf3e; text-align: right; font-family: 'Consolas', monospace; font-size: 24px; outline: none; }
+.calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; flex: 1; }
+.calc-btn-item, .calc-btn-itemNum { border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.1s; }
+.calc-btn-itemNum { background: #383c4a; color: #fff; }
+.calc-btn-itemNum:hover { background: #434855; }
+.calc-btn-item.op { background: #2b303b; color: #87cf3e; }
+.calc-btn-item.op:hover { background: #383c4a; }
+.calc-btn-item.eq { background: #87cf3e; color: #111; grid-row: span 2; height: 100%; }
+.calc-btn-item.eq:hover { background: #9be74c; }
+.calc-btn-itemNum.zero { grid-column: span 2; }
+
+/* ШТОРКА СИСТЕМНОГО УПРАВЛЕНИЯ */
+.quick-settings-panel { position: absolute; bottom: -400px; right: 15px; width: 300px; background: rgba(33, 37, 43, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 16px; display: flex; flex-direction: column; gap: 12px; z-index: 9997; transition: bottom 0.2s ease; }
+.quick-settings-panel.open { bottom: 60px; }
+.quick-settings-panel h3 { font-size: 14px; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
+.settings-status-box { background: #1c1f24; border-radius: 6px; padding: 10px; font-size: 12px; color: #cfced6; display: flex; flex-direction: column; gap: 6px; font-family: monospace; }
+.settings-section-title { font-size: 11px; font-weight: 600; color: #87cf3e; text-transform: uppercase; margin-top: 4px; }
+.theme-buttons { display: flex; gap: 6px; }
+.theme-btn { flex: 1; padding: 6px; font-size: 11px; background: #383c4a; border: 1px solid #434855; color: #fff; border-radius: 4px; cursor: pointer; font-weight: 600; }
+.theme-btn:hover { background: #434855; border-color: #87cf3e; }
+
+/* МЕНЕДЖЕР ПРОГРАММ С УСТАНОВКОЙ ЧЕРЕЗ APT */
+.store-layout { padding: 20px; overflow-y: auto; height: 100%; background: #2f343f; color: #dfdbd2; }
+.store-layout h2 { font-size: 18px; margin-bottom: 15px; color: #fff; }
+.store-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+.store-card { background: #21252b; border: 1px solid #3c424f; border-radius: 6px; padding: 16px; width: 230px; display: flex; flex-direction: column; gap: 10px; }
+.store-card h3 { color: #fff; font-size: 14px; }
+.store-card p { font-size: 12px; color: #a4a9b6; line-height: 1.4; }
+.store-btn-install { padding: 8px; background: #87cf3e; color: #111; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; text-align: center; }
+.store-btn-install:hover { background: #9be74c; }
+.progress-container { width: 100%; height: 6px; background: #383c4a; border-radius: 3px; display: none; overflow: hidden; }
+.progress-bar { width: 0%; height: 100%; background: #87cf3e; transition: width 0.08s linear; }
+
+/* ГИБРИДНОЕ МЕНЮ СТАРТ MINTOS */
+.start-menu { position: absolute; bottom: -650px; left: 50%; transform: translateX(-50%); width: 560px; height: 500px; background: rgba(33, 37, 43, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); z-index: 9998; display: flex; flex-direction: column; padding: 20px; transition: bottom 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
+.start-menu.open { bottom: 60px; }
+.start-search { width: 100%; padding: 10px 16px; border: 1px solid #3c424f; border-radius: 20px; background: #2f343f; color: #fff; outline: none; font-size: 13px; margin-bottom: 15px; }
+.start-search::placeholder { color: #a4a9b6; }
+.start-content-layout { display: flex; flex: 1; gap: 15px; overflow: hidden; }
+.start-mint-sidebar { width: 130px; border-right: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; gap: 6px; }
+.mint-cat-item { padding: 8px 12px; border-radius: 6px; font-size: 12px; color: #cfced6; cursor: pointer; }
+.mint-cat-item:hover, .mint-cat-item.active { background: rgba(135, 207, 62, 0.15); color: #87cf3e; font-weight: 600; }
+.start-apps-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 22%); gap: 12px; align-content: flex-start; overflow-y: auto; }
+.start-app-item { display: flex; flex-direction: column; align-items: center; text-align: center; cursor: pointer; font-size: 11px; color: #dfdbd2; padding: 10px; border-radius: 8px; }
+.start-app-item:hover { background: rgba(255,255,255,0.04); color: #fff; }
+.start-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: 10px; }
+.start-user { display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; color: #fff; }
+.user-avatar { width: 28px; height: 28px; background: #87cf3e; color: #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+.power-btn { font-size: 16px; color: #e54c4c; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+.power-btn:hover { background: rgba(255,77,77,0.1); }
+
+/* ПАНЕЛЬ ЗАДАЧ */
+.taskbar { height: 48px; background: rgba(21, 25, 33, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: absolute; bottom: 0; left: 0; right: 0; display: flex; justify-content: center; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); z-index: 9999; }
+.taskbar-icons { display: flex; gap: 12px; }
+.taskbar-icon { width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; border-radius: 6px; cursor: pointer; font-size: 20px; transition: background 0.15s; color: #dfdbd2; }
+.taskbar-icon svg { width: 28px; height: 28px; }
+.taskbar-icon:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+/* ТРЕЙ И СИСТЕМНЫЕ ЧАСЫ MINTOS */
+.system-tray { position: absolute; right: 15px; display: flex; align-items: center; gap: 10px; height: 100%; }
+.tray-clock { color: #dfdbd2; font-size: 12px; font-weight: 600; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: background 0.15s; text-shadow: none; }
+.tray-clock:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+@media (max-width: 768px) {
+    .window { width: 100% !important; height: calc(100vh - 48px) !important; top: 0 !important; left: 0 !important; border-radius: 0; border: none; }
+    .window-header { cursor: default; }
+    .start-menu { width: 100%; height: calc(100vh - 48px); border-radius: 0; border: none; }
+    .control-btn.max-btn { display: none; }
+    .system-tray { right: 5px; }
+}
