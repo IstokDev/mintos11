@@ -1,6 +1,80 @@
 let currentFolder = 'root';
 let openedFileName = null;
 
+// Локальная база данных сайтов для имитации интернета (Полный обход CSP и CORS блокировок через srcdoc)
+const localWebDatabase = {
+    search(query) {
+        const q = query.toLowerCase();
+        let results = [];
+        if (q.includes('гугл') || q.includes('google')) {
+            results.push({ title: 'Google Поиск Proxy', desc: 'Добро пожаловать в крупнейшую поисковую систему интернета.', action: 'google' });
+        }
+        if (q.includes('вики') || q.includes('wiki') || q.includes('wikipedia')) {
+            results.push({ title: 'Википедия — Свободная энциклопедия', desc: 'Миллионы статей на любые темы, создаваемые пользователями.', action: 'wiki' });
+        }
+        if (q.includes('новост') || q.includes('news')) {
+            results.push({ title: 'Служба новостей MintOS 11', desc: 'Главные события: Наш эмулятор Windows 11 переведен в полностью автономный режим!', action: 'news' });
+        }
+        if (q.includes('вк') || q.includes('vk') || q.includes('vkontakte')) {
+            results.push({ title: 'ВКонтакте (Локальный прокси-клиент)', desc: 'Общайтесь с друзьями, делитесь фотографиями и смотрите видео.', action: 'vk' });
+        }
+        if (q.includes('майн') || q.includes('mine') || q.includes('minecraft')) {
+            results.push({ title: 'Minecraft Web Edition', desc: 'Официальный дистрибутив и запуск игры прямо в окне системы.', action: 'minecraft' });
+        }
+        if (results.length === 0) {
+            results.push({ title: `Результаты безопасного поиска для: "${query}"`, desc: 'Оффлайн-прокси успешно обработал запрос. Для тестирования попробуйте ввести в поиск: гугл, новости, вики или майнкрафт.', action: 'generic' });
+        }
+        return results;
+    },
+    getPage(action) {
+        if (action === 'google') {
+            return `<div style="text-align:center;padding:35px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h1 style="font-size:42px;margin:0;"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></h1><input type="text" style="width:85%;padding:12px 15px;border:1px solid #dfe1e5;border-radius:24px;margin-top:20px;outline:none;box-shadow:0 1px 6px rgba(32,33,36,0.28);" value="Поиск проксирован через верхнюю панель Edge!"><br><button style="margin-top:20px;padding:10px 20px;background:#f8f9fa;border:1px solid #f8f9fa;border-radius:4px;cursor:pointer;color:#3c4043;font-weight:bold;">Поиск в сети Proxy</button></div>`;
+        }
+        if (action === 'wiki') {
+            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Википедия — MintOS Edition</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Википедия</b> работает внутри эмулятора через изолированные текстовые ноды. Это гарантирует защиту вашего смартфона или ПК от CORS-блокировок и ошибок frame-ancestors на 100%.</p></div>`;
+        }
+        if (action === 'news') {
+            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📰 Вестник дистрибутивов MintOS 11</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Важное обновление:</b> Из ядра полностью вырезан Python-зависимый код. Браузер, Корзина, Калькулятор и Блокнот теперь работают на 100% автономно в любом месте. Вы можете смело скидывать папку другу — у него всё запустится!</p></div>`;
+        }
+        if (action === 'vk') {
+            return `<div style="background:#0077FF;color:white;padding:25px;height:100vh;font-family:sans-serif;"><h2>ВКонтакте для WebOS</h2><p style="margin-top:10px;font-size:14px;">Локальный прокси-профиль администратора успешно загружен. Сетевые блокировки безопасности Cross-Origin полностью обойдены.</p></div>`;
+        }
+        if (action === 'minecraft') {
+            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📦 Управление пакетом Minecraft Web</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;">Клиент успешно проксирован через репозитории Apt Store. Чтобы запустить полную 3D игру, воспользуйтесь Менеджером Программ на рабочем столе!</p></div>`;
+        }
+        return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Оффлайн страница Прокси</h2><p style="margin-top:10px;font-size:14px;">Вы перешли на тестовую текстовую страницу эмулятора. Контент успешно обработан внутренним движком рендеринга.</p></div>`;
+    }
+};
+
+// Функция оффлайн-браузера, объявленная в самом верху (исправляет ReferenceError)
+function processSearch() {
+    let input = document.getElementById('urlInput').value.trim();
+    const frame = document.getElementById('browserFrame');
+    if (!input || !frame) return;
+
+    const results = localWebDatabase.search(input);
+    let resultsHTML = `<div style="padding:20px;font-family:sans-serif;background:#fff;height:100%;overflow-y:auto;color:#000;"><h3>Результаты оффлайн-поиска MintOS:</h3><div style="display:flex;flex-direction:column;gap:16px;margin-top:15px;">`;
+    
+    results.forEach((res, index) => {
+        resultsHTML += `<div style="cursor:pointer;" id="search-link-${index}"><h4 style="color:#1a0dab;margin:0;font-size:16px;">${res.title}</h4><p style="color:#4d5156;margin:4px 0 0 0;font-size:13px;">${res.desc}</p></div>`;
+    });
+    resultsHTML += `</div></div>`;
+
+    frame.srcdoc = resultsHTML;
+
+    frame.onload = () => {
+        const frameDoc = frame.contentDocument || frame.contentWindow.document;
+        results.forEach((res, index) => {
+            const link = frameDoc.getElementById(`search-link-${index}`);
+            if (link) {
+                link.addEventListener('click', () => {
+                    frameDoc.body.innerHTML = localWebDatabase.getPage(res.action);
+                });
+            }
+        });
+    };
+}
+
 // Локальный терминальный движок Linux Mint (bash)
 const bashSimulator = {
     execute(commandStr) {
@@ -8,7 +82,7 @@ const bashSimulator = {
         if (!trimmed) return '';
         
         const args = trimmed.split(' ');
-        const cmd = args[0].toLowerCase();
+        const cmd = args.toLowerCase();
         const param = args.length > 1 ? args.slice(1).join(' ') : '';
         
         switch(cmd) {
@@ -55,52 +129,12 @@ const bashSimulator = {
                 const targetFile = fileList.find(f => f.name === param && f.type === 'file');
                 if (!targetFile) return `rm: невозможно удалить "${param}": такого файла нет`;
                 
-                // Перемещаем в корзину через интерфейс ядра
                 moveToTrash(param);
                 return `Файл "${param}" перемещен в Системную корзину.`;
                 
             default:
                 return `bash: ${cmd}: команда не найдена. Введите "help" для справки.`;
         }
-    }
-};
-
-// Автономная база данных страниц для браузера (Полный обход CSP и CORS блокировок через srcdoc)
-const localWebDatabase = {
-    search(query) {
-        const q = query.toLowerCase();
-        let results = [];
-        if (q.includes('гугл') || q.includes('google')) {
-            results.push({ title: 'Google Поиск Proxy', desc: 'Добро пожаловать в крупнейшую поисковую систему интернета.', action: 'google' });
-        }
-        if (q.includes('вики') || q.includes('wiki') || q.includes('wikipedia')) {
-            results.push({ title: 'Википедия — Свободная энциклопедия', desc: 'Миллионы статей на любые темы, создаваемые пользователями.', action: 'wiki' });
-        }
-        if (q.includes('новост') || q.includes('news')) {
-            results.push({ title: 'Служба новостей MintOS 11', desc: 'Главные события: Наш эмулятор Windows 11 переведен в полностью автономный режим!', action: 'news' });
-        }
-        if (q.includes('вк') || q.includes('vk') || q.includes('vkontakte')) {
-            results.push({ title: 'ВКонтакте (Локальный прокси-клиент)', desc: 'Общайтесь с друзьями, делитесь фотографиями и смотрите видео.', action: 'vk' });
-        }
-        if (results.length === 0) {
-            results.push({ title: `Результаты безопасного поиска для: "${query}"`, desc: 'Оффлайн-прокси успешно обработал запрос. Для тестирования попробуйте ввести в поиск: гугл, новости, вики или вк.', action: 'generic' });
-        }
-        return results;
-    },
-    getPage(action) {
-        if (action === 'google') {
-            return `<div style="text-align:center;padding:35px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h1 style="font-size:42px;margin:0;"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></h1><input type="text" style="width:85%;padding:12px 15px;border:1px solid #dfe1e5;border-radius:24px;margin-top:20px;outline:none;box-shadow:0 1px 6px rgba(32,33,36,0.28);" value="Поиск проксирован через верхнюю панель Edge!"><br><button style="margin-top:20px;padding:10px 20px;background:#f8f9fa;border:1px solid #f8f9fa;border-radius:4px;cursor:pointer;color:#3c4043;font-weight:bold;">Поиск в сети Proxy</button></div>`;
-        }
-        if (action === 'wiki') {
-            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Википедия — MintOS Edition</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Википедия</b> работает внутри эмулятора через изолированные текстовые ноды. Это гарантирует защиту вашего смартфона или ПК от CORS-блокировок и ошибок frame-ancestors на 100%.</p></div>`;
-        }
-        if (action === 'news') {
-            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📰 Вестник дистрибутивов MintOS 11</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Важное обновление:</b> Из ядра полностью вырезан Python-зависимый код. Браузер, Корзина, Калькулятор и Блокнот теперь работают на 100% автономно в любом месте. Вы можете смело скидывать папку другу — у него всё запустится!</p></div>`;
-        }
-        if (action === 'vk') {
-            return `<div style="background:#0077FF;color:white;padding:25px;height:100vh;font-family:sans-serif;"><h2>ВКонтакте для WebOS</h2><p style="margin-top:10px;font-size:14px;">Локальный прокси-профиль администратора успешно загружен. Сетевые блокировки безопасности Cross-Origin полностью обойдены.</p></div>`;
-        }
-        return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Оффлайн страница Прокси</h2><p style="margin-top:10px;font-size:14px;">Вы перешли на тестовую текстовую страницу эмулятора. Контент успешно обработан внутренним движком рендеринга.</p></div>`;
     }
 };
 // Хранилище Системной корзины в оперативной памяти (дублируется в localStorage)
@@ -278,7 +312,6 @@ function initBatteryStatus() {
         batEl.innerText = "🔋 Батарея: 100% (API не подд.)";
     }
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     // Инициализация часов и статуса батареи при загрузке ядра
     startSystemClock();
@@ -301,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('taskbar-notepad').addEventListener('click', () => {
         openedFileName = null;
         document.getElementById('notepadText').value = "";
-        document.getElementById('notepad-title').innerText = "📝 Xed — Новый файл";
+        document.getElementById('notepad-title').innerText = "📝 Xed — Новый file";
         document.getElementById('btn-run-code').style.display = 'none';
         openWindow('notepad');
     });
@@ -330,6 +363,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`Системные обои переключены на режим: ${e.target.innerText}`);
         });
     });
+
     // Очистка Системной корзины (Фича 2)
     document.getElementById('btn-empty-trash').addEventListener('click', () => {
         if (trashContainer.length === 0) return;
@@ -447,7 +481,7 @@ document.addEventListener('DOMContentLoaded', () => {
         frame.srcdoc = `<div style="padding:20px;font-family:sans-serif;background:#fff;height:100%;overflow-y:auto;color:#000;"><h3>Добро пожаловать в Браузер WebOS!</h3><p style="margin-top:10px;color:#555;">Система защиты ядра MintOS предотвратила сетевые CSP ошибки фреймов. Попробуйте ввести поисковый запрос <b>"новости"</b>, <b>"гугл"</b> или <b>"вики"</b> в строку выше!</p></div>`;
     }
 
-    // Первичный рендеринг диска Nemo и Корзины при старте
     renderExplorer('root');
     renderTrashView();
 });
+
