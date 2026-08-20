@@ -3,19 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wintux OS — Linux Mint & Windows 11 Hybrid</title>
+    <title>Wintux OS — NVIDIA & Developer Extreme Edition</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Wintux OS Structure: Plymouth Screen, Lockscreen, Logout Dialog, Desktop, Settings, Start Menu -->
+    <!-- АУДИО И PLYMOUTH -->
     <audio id="login-sound" src="https://wikimedia.org" preload="auto"></audio>
-    <div id="plymouth-screen" class="plymouth-overlay">...</div>
-    <div id="wintux-auth-screen" class="lockscreen-overlay" style="display: none;">...</div>
-    <div id="mint-logout-dialog" class="mint-dialog-overlay" style="display: none;">...</div>
-    <div class="desktop" id="desktop-grid">...</div>
-    <div id="quick-settings" class="quick-settings-panel">...</div>
-    <div id="start-menu" class="start-menu">...</div>
-    <!-- ОКНО: ПРОДВИНУТЫЙ ПРОВОДНИК NEMO -->
+    <div id="plymouth-screen" class="plymouth-overlay">
+        <div class="plymouth-content">
+            <div class="plymouth-logo">💚 WINTUX OS Extreme</div>
+            <div class="plymouth-spinner"></div>
+            <div id="plymouth-status" class="plymouth-text">Загрузка...</div>
+            <button id="btn-boot-pc" class="boot-power-btn" style="display: none;">⏻ Включить</button>
+        </div>
+    </div>
+
+    <!-- LOCKSCREEN, DIALOGS, DESKTOP, MENU (Собранная часть HTML) -->
+    <div id="wintux-auth-screen" class="lockscreen-overlay" style="display: none;">...[Содержимое экрана блокировки]...</div>
+    <div id="mint-logout-dialog" class="mint-dialog-overlay" style="display: none;">...[Диалог выключения]...</div>
+    
+    <div class="desktop" id="desktop-grid">
+        <div class="shortcut" id="shortcut-explorer">📂<br>Файлы</div>
+        <div class="shortcut" id="shortcut-terminal">💻<br>Bash</div>
+        <div class="shortcut" id="shortcut-booster">🚀<br>Booster</div>
+    </div>
+
+    <div id="start-menu" class="start-menu">...[Меню Пуск]...</div>
+    <!-- ОКНО: ФАЙЛОВЫЙ МЕНЕДЖЕР NEMO -->
     <div id="explorer" class="window">
         <div class="window-header" id="header-explorer">
             <div class="window-title">📂 Файловый менеджер Nemo</div>
@@ -44,7 +58,7 @@
         </div>
     </div>
 
-    <!-- ОКНО: ТЕКСТОВЫЙ РЕДАКТОР И СРЕДА РАЗРАБОТКИ XED -->
+    <!-- ОКНО: РЕДАКТОР КОДА И ТЕКСТА XED -->
     <div id="notepad" class="window">
         <div class="window-header" id="header-notepad">
             <div class="window-title" id="notepad-title">📝 Редактор кода Xed</div>
@@ -91,13 +105,49 @@
             <div class="terminal-container" id="terminal-click-zone">
                 <div id="terminal-history" class="terminal-history">
                     <div>Добро пожаловать в Wintux OS Bash Engine!</div>
-                    <div>Доступны команды: <b>help</b>, <b>ls</b>, <b>mkdir</b>, <b>rm [файл]</b>, <b>clear</b>, <b>neofetch</b>.</div>
+                    <div>Доступны команды: <b>help</b>, <b>ls</b>, <b>mkdir</b>, <b>rm [файл]</b>, <b>clear</b>, <b>neofetch</b>, <b>nvidia-smi</b>.</div>
                 </div>
                 <div class="terminal-input-line">
                     <span class="terminal-prompt">user@wintux_pc:~$</span>
                     <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off">
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- ОКНО ТВОЕЙ СЛУЖБЫ: WINTUX TUNING & GPU BOOSTER (УТИЛИТА РАЗГОНА) -->
+    <div id="booster-window" class="window" style="width:400px; height:450px;">
+        <div class="window-header" id="header-booster">
+            <div class="window-title">🚀 Wintux Tuning & GPU Booster v1.0</div>
+            <div class="window-controls">
+                <button class="control-btn close-btn" id="close-booster">✕</button>
+            </div>
+        </div>
+        <div class="window-body" style="background:#111; color:#fff; padding:15px; font-family:monospace; display:flex; flex-direction:column; gap:12px;">
+            <div style="border-bottom:1px solid #333; padding-bottom:8px; color:#87cf3e; font-weight:bold;">Управление разгоном видеокарты NVIDIA / Мобильной графики</div>
+            <div style="background:#1a1a1a; padding:10px; border-radius:6px; border:1px solid #333;">
+                <div>Текущий режим: <span id="booster-mode-text" style="color:#ffcc00; font-weight:bold;">STANDART</span></div>
+                <div>Частота ядра GPU: <span id="gpu-clock-text">1450 MHz</span></div>
+                <div>Скорость кулеров: <span id="gpu-fan-text">Auto (45%)</span></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <button id="btn-booster-normal" style="width:100%; padding:8px; background:#333; color:#fff; border:1px solid #444; border-radius:4px; cursor:pointer; font-family:inherit;">🌿 Обычный режим (Энергосбережение)</button>
+                <button id="btn-booster-turbo" style="width:100%; padding:10px; background:#87cf3e; color:#111; border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-family:inherit; box-shadow: 0 0 10px rgba(135,207,62,0.4);">🔥 ИГРОВОЙ РЕЖИМ: NVIDIA TURBO BOOST</button>
+            </div>
+            <div id="booster-log-box" style="flex:1; background:#050505; border:1px solid #222; border-radius:4px; padding:8px; font-size:11px; color:#888; overflow-y:auto; white-space:pre-wrap;">Система разгона Wintux готова к оптимизации...</div>
+        </div>
+    </div>
+
+    <!-- ОКНО ТВОЕЙ СЛУЖБЫ: WINTUX QUICK NOTES (ЛИЧНЫЕ ЗАМЕТКИ) -->
+    <div id="quick-notes-window" class="window" style="width:350px; height:380px;">
+        <div class="window-header" id="header-quick-notes">
+            <div class="window-title">📌 Личные заметки Wintux Notes</div>
+            <div class="window-controls">
+                <button class="control-btn close-btn" id="close-quick-notes">✕</button>
+            </div>
+        </div>
+        <div class="window-body" style="background:#fff7bd; color:#222; padding:0; display:flex; flex-direction:column; height:100%;">
+            <div style="background:#f4eb9b; padding:6px 12px; font-size:12px; color:#555; font-weight:bold; border-bottom:1px solid #e0da8b;">Быстрый блокнот Wintux (Сохраняется автоматически)</div>
+            <textarea id="quickNotesText" style="flex:1; width:100%; padding:12px; border:none; resize:none; outline:none; font-family:'Segoe UI', sans-serif; font-size:14px; background:transparent; color:#111;" placeholder="Пиши сюда свои идеи, планы или важные мысли..."></textarea>
         </div>
     </div>
 
@@ -149,7 +199,7 @@
         </div>
     </div>
 
-    <!-- ОКНО: КОРЗИНА -->
+    <!-- ОКНО: СИСТЕМНАЯ КОРЗИНА -->
     <div id="trash-window" class="window">
         <div class="window-header" id="header-trash">
             <div class="window-title">🗑️ Корзина</div>
@@ -175,6 +225,8 @@
             <div class="taskbar-icon" id="taskbar-explorer">📂</div>
             <div class="taskbar-icon" id="taskbar-terminal">💻</div>
             <div class="taskbar-icon" id="taskbar-notepad">📝</div>
+            <div class="taskbar-icon" id="taskbar-booster">🚀</div>
+            <div class="taskbar-icon" id="taskbar-quick-notes">📌</div>
             <div class="taskbar-icon" id="taskbar-cs">🔫</div>
             <div class="taskbar-icon" id="taskbar-calc">🧮</div>
         </div>
@@ -184,7 +236,7 @@
         </div>
     </div>
 
-    <!-- СИСТЕМНЫЕ СКРИПТЫ ЯДРА -->
+    <!-- ПОДКЛЮЧЕНИЕ СИСТЕМНЫХ КОДОВ ЯДРА -->
     <script src="fs-core.js"></script>
     <script src="wm-core.js"></script>
     <script src="main.js"></script>
