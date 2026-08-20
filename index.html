@@ -11,7 +11,44 @@
     <!-- АУДИО-ЧИП СИСТЕМНОГО ПРИВЕТСТВИЯ WINTUX -->
     <audio id="login-sound" src="https://wikimedia.org" preload="auto"></audio>
 
-    <!-- РАБОЧИЙ СТОЛ WINTUX OS -->
+    <!-- ЭКРАН ЗАГРУЗКИ / ВЫКЛЮЧЕНИЯ (PLYMOUTH BOOT SPLASH) -->
+    <div id="plymouth-screen" class="plymouth-overlay">
+        <div class="plymouth-content">
+            <div class="plymouth-logo">⚡ WINTUX OS</div>
+            <div class="plymouth-spinner"></div>
+            <div id="plymouth-status" class="plymouth-text">Загрузка модулей ядра Linux Mint...</div>
+            <button id="btn-boot-pc" class="boot-power-btn" style="display: none;">⏻ Включить ПК</button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН ВВОДА ПАРОЛЯ (WINTUX LOCKSCREEN) -->
+    <div id="wintux-auth-screen" class="lockscreen-overlay" style="display: none;">
+        <div class="lockscreen-box">
+            <div class="user-avatar-big">W</div>
+            <h2 id="auth-title">Пользователь Wintux</h2>
+            <div class="auth-input-group">
+                <input type="password" id="auth-password-input" placeholder="Введите пароль...">
+                <button id="btn-submit-auth">👉</button>
+            </div>
+            <p id="auth-error-msg" style="color: #e54c4c; font-size: 12px; margin-top: 8px; font-weight: bold; display: none;">Неверный пароль!</p>
+        </div>
+    </div>
+
+    <!-- СИСТЕМНОЕ МЕНЮ ВЫКЛЮЧЕНИЯ LINUX MINT -->
+    <div id="mint-logout-dialog" class="mint-dialog-overlay" style="display: none;">
+        <div class="mint-dialog-box">
+            <h3>Завершение сеанса Wintux</h3>
+            <p>Выберите необходимое действие для wintux_pc:</p>
+            <div class="mint-dialog-buttons">
+                <button class="mint-dlg-btn lock" id="dlg-btn-lock">🔒 Блокировка</button>
+                <button class="mint-dlg-btn reboot" id="dlg-btn-reboot">🔄 Перезагрузка</button>
+                <button class="mint-dlg-btn shutdown" id="dlg-btn-shutdown">⏻ Выключение</button>
+            </div>
+            <button class="mint-dlg-cancel" id="dlg-btn-cancel">Отмена</button>
+        </div>
+    </div>
+
+    <!-- ГИБРИДНЫЙ РАБОЧИЙ СТОЛ WINTUX OS -->
     <div class="desktop" id="desktop-grid">
         <div class="shortcut" id="shortcut-explorer">
             <svg viewBox="0 0 48 48"><path d="M40,12H24l-4-4H8C5.8,8,4,9.8,4,12v24c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z" fill="#87cf3e"/><path d="M40,16H12c-2.2,0-4,1.8-4,4v16c0,2.2,1.8,4,4,4h28c2.2,0,4-1.8,4-4V20C44,18.2,42.2,16,40,16z" fill="#9be74c"/></svg>
@@ -33,9 +70,6 @@
             <svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="6" fill="#1b1e22"/><circle cx="24" cy="24" r="14" stroke="#e54c4c" stroke-width="3" fill="none"/><path d="M16 24h16M24 16v16" stroke="#e54c4c" stroke-width="2"/></svg>
             Counter-Strike 1.6
         </div>
-        <div class="shortcut" id="shortcut-mc">
-            <span style="font-size:36px;">📦</span><br>Minecraft 3D
-        </div>
         <div class="shortcut" id="shortcut-calc">
             <svg viewBox="0 0 48 48"><rect x="6" y="4" width="36" height="40" rx="4" fill="#434855"/><rect x="10" y="8" width="28" height="10" rx="2" fill="#21252b"/><path d="M14 26h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4zm-16 8h4v4h-4zm8 0h4v4h-4zm8 0h4v4h-4z" fill="#fff"/></svg>
             Калькулятор
@@ -44,7 +78,6 @@
             <span style="font-size:36px;">🗑️</span><br>Корзина
         </div>
     </div>
-
     <!-- ШТОРКА МОНИТОРИНГА РЕСУРСОВ СИСТЕМЫ -->
     <div id="quick-settings" class="quick-settings-panel">
         <h3>Диспетчер ресурсов Wintux</h3>
@@ -79,9 +112,11 @@
         </div>
         <div class="start-footer">
             <div class="start-user"><div class="user-avatar">W</div><span>Wintux User</span></div>
-            <div class="power-btn" onclick="alert('Завершение работы Wintux OS...')">⏻</div>
+            <!-- КНОПКА МЕНЮ ВЫКЛЮЧЕНИЯ LINUX MINT -->
+            <div class="power-btn" id="start-power-btn">⏻</div>
         </div>
     </div>
+
     <!-- ОКНО: ПРОДВИНУТЫЙ ПРОВОДНИК NEMO -->
     <div id="explorer" class="window">
         <div class="window-header" id="header-explorer">
@@ -110,7 +145,6 @@
             </div>
         </div>
     </div>
-
     <!-- ОКНО: ТЕКСТОВЫЙ РЕДАКТОР И СРЕДА РАЗРАБОТКИ XED -->
     <div id="notepad" class="window">
         <div class="window-header" id="header-notepad">
@@ -126,7 +160,7 @@
                     <span id="btn-save-note">💾 Сохранить скрипт / файл</span>
                     <span id="btn-run-code" style="margin-left:15px; color:#87cf3e; display:none; cursor:pointer; font-weight:bold;">▶ Запустить HTML-код</span>
                 </div>
-                <textarea id="notepadText" class="notepad-textarea" placeholder="Пиши свой код (HTML, CSS, JS) или text здесь..."></textarea>
+                <textarea id="notepadText" class="notepad-textarea" placeholder="Пиши свой код (HTML, CSS, JS) или текст здесь..."></textarea>
             </div>
         </div>
     </div>
@@ -167,6 +201,7 @@
             </div>
         </div>
     </div>
+
     <!-- ОКНО: УМНЫЙ ПРОКСИ-БРАУЗЕР (ВЫВОД САЙТОВ И ВИДЕО) -->
     <div id="browser" class="window">
         <div class="window-header" id="header-browser">
@@ -186,8 +221,7 @@
             </div>
         </div>
     </div>
-
-    <!-- ОКНО: COUNTER-STRIKE 1.6 -->
+    <!-- ОКНО: COUNTER-STRIKE 1.6 С МОБИЛЬНЫМ ТАЧ-ФИКСОМ -->
     <div id="cs" class="window">
         <div class="window-header" id="header-cs">
             <div class="window-title">🔫 Counter-Strike 1.6 — Игровой сервер</div>
@@ -196,22 +230,10 @@
                 <button class="control-btn close-btn" id="close-cs">✕</button>
             </div>
         </div>
-        <div class="window-body">
-            <iframe class="browser-iframe" src="https://play-cs.com"></iframe>
-        </div>
-    </div>
-
-    <!-- ОКНО: MINECRAFT 3D (EAGLERCRAFT) -->
-    <div id="app-mc" class="window">
-        <div class="window-header" id="header-mc">
-            <div class="window-title">📦 Minecraft 1.5.2 Java Web Core</div>
-            <div class="window-controls">
-                <button class="control-btn max-btn" data-window="app-mc">🗖</button>
-                <button class="control-btn close-btn" id="close-mc">✕</button>
-            </div>
-        </div>
-        <div class="window-body">
-            <iframe class="browser-iframe" src="https://eaglercraft.com"></iframe>
+        <div class="window-body" style="position: relative;">
+            <iframe id="cs-frame" class="browser-iframe" src="https://play-cs.com"></iframe>
+            <!-- Прозрачный мобильный слой-джойстик, активируемый на смартфонах -->
+            <div id="cs-mobile-touch-helper" class="cs-touch-overlay" style="display: none;">🤖 Тач-режим включен</div>
         </div>
     </div>
 
@@ -284,7 +306,7 @@
         </div>
     </div>
 
-    <!-- ПОДКЛЮЧЕНИЕ СИСТЕМНЫХ КОРОВ -->
+    <!-- ПОДКЛЮЧЕНИЕ СИСТЕМНЫХ ЯДЕР -->
     <script src="fs-core.js"></script>
     <script src="wm-core.js"></script>
     <script src="main.js"></script>
