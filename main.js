@@ -51,6 +51,7 @@ const localWebDatabase = {
         return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Оффлайн страница Прокси</h2><p style="margin-top:10px;font-size:14px;">Вы перешли на тестовую текстовую страницу эмулятора. Контент успешно обработан внутренним движком рендеринга.</p></div>`;
     }
 };
+
 // Функция оффлайн-браузера, объявленная в самом верху (исправляет ReferenceError)
 function processSearch() {
     let input = document.getElementById('urlInput').value.trim();
@@ -112,7 +113,7 @@ const bashSimulator = {
                        `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Uptime: 1 min\n` +
                        `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Shell: bash simulator v1.8\n` +
                        `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Resolution: ${window.innerWidth}x${window.innerHeight}\n` +
-                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  DE: Cinnamon-Mica Secure\n" +
+                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  DE: Cinnamon-Mica Secure\n` +
                        `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]ffff[RESET]   WM: WintuxWindowManager\n` +
                        `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   Terminal: wintux-terminal-js\n` +
                        `[GREEN]      eeeeeeeeeeeeeeeeeeeeeee[RESET]  Memory: 1.2GB / 16GB (Ultra Sandbox)`;
@@ -215,6 +216,7 @@ function moveToTrash(filename) {
     renderTrashView();
     alert(`Файл "${filename}" успешно отправлен в Корзину.`);
 }
+
 // Отрисовка файлов внутри окна Корзины
 function renderTrashView() {
     const trashView = document.getElementById('trashFileView');
@@ -279,7 +281,6 @@ function calculateResult() {
     if (!display || !calcExpression) return;
     
     try {
-        // Безопасное математическое вычисление встроенным интерпретатором JS
         const result = Function('"use strict";return (' + calcExpression + ')')();
         display.value = result;
         calcExpression = result.toString();
@@ -335,14 +336,16 @@ function checkSystemAuth() {
     if (!savedPassword) {
         // Если пароля ещё нет в системе, предлагаем создать его при первом включении
         titleEl.innerText = "Создание пароля Wintux";
-        document.getElementById('auth-password-input').placeholder = "Придумайте пароль...";
+        const pwdInput = document.getElementById('auth-password-input');
+        if (pwdInput) pwdInput.placeholder = "Придумайте пароль...";
     } else {
         titleEl.innerText = "Вход в Wintux OS";
-        document.getElementById('auth-password-input').placeholder = "Введите пароль...";
+        const pwdInput = document.getElementById('auth-password-input');
+        if (pwdInput) pwdInput.placeholder = "Введите пароль...";
     }
 }
 
-// Обработчик кнопки отправки пароля
+// Обработка отправки пароля (первая установка или проверка)
 function submitAuthPassword() {
     const inputEl = document.getElementById('auth-password-input');
     const errorEl = document.getElementById('auth-error-msg');
@@ -358,19 +361,19 @@ function submitAuthPassword() {
     }
 
     if (!savedPassword) {
-        // Первая установка пароля
+        // Первая установка пароля в системе
         localStorage.setItem('wintux_sys_pwd', value);
-        alert("Пароль успешно создан! Запоминайте его.");
+        alert("Пароль успешно создан! Запомните его.");
         if (errorEl) errorEl.style.display = 'none';
         if (authScreen) authScreen.style.display = 'none';
-        playSystemLogin(); // Проигрываем звук приветствия Mint
+        playSystemLogin(); // Успешное включение со звуком
     } else {
-        // Проверка существующего пароля
+        // Проверка пароля при входе
         if (value === savedPassword) {
             if (errorEl) errorEl.style.display = 'none';
             if (authScreen) authScreen.style.display = 'none';
             inputEl.value = '';
-            playSystemLogin(); // Успешный вход со звуком
+            playSystemLogin(); // Ламповый звук Linux
         } else {
             if (errorEl) {
                 errorEl.style.display = 'block';
@@ -385,7 +388,7 @@ function submitAuthPassword() {
 function playSystemLogin() {
     const audio = document.getElementById('login-sound');
     if (audio) {
-        audio.play().catch(e => console.log("Браузер заблокировал автоплей до клика"));
+        audio.play().catch(e => console.log("Браузер ждет клика пользователя для воспроизведения аудио"));
     }
 }
 // Обработчики Plymouth анимации (Включение, перезагрузка и выключение)
@@ -464,6 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (spinner) spinner.style.display = 'block';
         triggerSystemBoot();
     });
+
     // 1. Поведение диалогового окна выключения Linux Mint
     const startPowerBtn = document.getElementById('start-power-btn');
     const logoutDlg = document.getElementById('mint-logout-dialog');
@@ -499,7 +503,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const dlgShutdown = document.getElementById('dlg-btn-shutdown');
     if (dlgShutdown) dlgShutdown.addEventListener('click', triggerSystemShutdown);
-
     // 2. Безопасная привязка ярлыков Рабочего стола Wintux
     const shortcuts = {
         'shortcut-explorer': 'explorer',
@@ -518,11 +521,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const csShortcut = document.getElementById('shortcut-cs');
     if (csShortcut) {
         csShortcut.addEventListener('click', () => {
-            // Если зашли со смартфона (ширина экрана маленькая), включаем тач-помощник
             if (window.innerWidth <= 768) {
                 const helper = document.getElementById('cs-mobile-touch-helper');
                 if (helper) helper.style.display = 'block';
-                // Автоматически разворачиваем CS на весь экран телефона
                 const csWin = document.getElementById('cs');
                 if (csWin) csWin.classList.add('maximized');
             }
@@ -557,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (taskbarNotepad) taskbarNotepad.addEventListener('click', () => openWindow('notepad'));
 
     // Логика работы гибридного Меню Пуск Wintux
+    const startBtn = document.getElementById('start-menu-btn');
     if (startBtn && startMenu) {
         startBtn.addEventListener('click', (e) => { e.stopPropagation(); startMenu.classList.toggle('open'); });
         document.addEventListener('click', () => startMenu.classList.remove('open'));
@@ -576,6 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('click', () => openWindow(startApps[id]));
     }
+
     // 4. Управление оконными интерфейсами (Закрытие и Максимизация)
     ['explorer', 'notepad', 'terminal', 'browser', 'cs', 'web-viewer', 'calc', 'trash-window'].forEach(id => {
         const closeBtn = document.getElementById('close-' + id);
@@ -590,10 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clockBtn = document.getElementById('system-clock');
     const settingsPanel = document.getElementById('quick-settings');
     if (clockBtn && settingsPanel) {
-        clockBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            settingsPanel.classList.toggle('open');
-        });
+        clockBtn.addEventListener('click', (e) => { e.stopPropagation(); settingsPanel.classList.toggle('open'); });
         document.addEventListener('click', () => settingsPanel.classList.remove('open'));
         settingsPanel.addEventListener('click', (e) => e.stopPropagation());
     }
@@ -613,7 +613,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (saveNoteBtn) {
         saveNoteBtn.addEventListener('click', () => {
             const text = document.getElementById('notepadText').value;
-            let filename = openedFileName || prompt('Введите имя файла с кастомным расширением (например: index.html, script.js, text.txt):', 'index.html');
+            let filename = openedFileName || prompt('Введите имя файла с кастомным расширением (например: index.html, style.css, script.js, text.txt):', 'index.html');
             if (filename) {
                 FSCore.createFile('documents', filename, text);
                 alert(`Файл "${filename}" успешно записан в память ядра.`);
@@ -643,7 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Интерактивная обработка ввода в Терминале Linux Wintux
+    // 8. Интерактивная обработка ввода в Терминале Wintux
     const termInput = document.getElementById('terminal-input');
     const termHistory = document.getElementById('terminal-history');
     const clickZone = document.getElementById('terminal-click-zone');
