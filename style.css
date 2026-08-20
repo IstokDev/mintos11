@@ -4,6 +4,7 @@
     -webkit-tap-highlight-color: transparent; 
 }
 body { 
+    /* Мощный игровой градиент с зеленым Mint акцентом */
     background: radial-gradient(circle at 50% 30%, #2b3a22 0%, #141910 60%, #080a06 100%);
     height: 100vh; overflow: hidden; position: relative;
     transition: background 0.3s ease;
@@ -20,7 +21,7 @@ body {
 .shortcut svg { width: 42px; height: 40px; display: block; margin: 0 auto 6px; }
 .shortcut:hover, .shortcut:active { background: rgba(135, 207, 62, 0.2); border-radius: 6px; }
 
-/* ГИБРИДНЫЙ ДИЗАЙН ОКОН (РАЗМЫТИЕ WIN11 + ЦВЕТА LINUX MINT) */
+/* РЕАКТИВНЫЙ ИГРОВОЙ ДИЗАЙН ОКОН (РАЗМЫТИЕ MICA + ЦВЕТА LINUX MINT) */
 .window { 
     position: absolute; background: rgba(31, 35, 43, 0.93); backdrop-filter: blur(25px); 
     -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.08); 
@@ -62,11 +63,11 @@ body {
 .file-item { width: 70px; text-align: center; cursor: pointer; font-size: 11px; color: #dfdbd2; word-break: break-all; padding: 4px; border-radius: 4px; position: relative; }
 .file-item:hover { background: rgba(255,255,255,0.05); }
 
-/* Кнопка удаления файла */
+/* Интерактивный крестик удаления файлов (Фича 2) */
 .file-delete-btn { position: absolute; top: 2px; right: 2px; background: #e54c4c; color: white; border: none; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; cursor: pointer; display: none; align-items: center; justify-content: center; line-height: 1; }
 .file-item:hover .file-delete-btn { display: flex; }
 
-/* РЕДАКТОР XED */
+/* РЕДАКТОР КОДА XED */
 .notepad-container { display: flex; flex-direction: column; height: 100%; }
 .notepad-menu { background: #21252b; padding: 6px 12px; border-bottom: 1px solid #1c1f24; font-size: 12px; color: #87cf3e; cursor: pointer; font-weight: 600; }
 .notepad-textarea { flex: 1; width: 100%; height: 100%; padding: 12px; border: none; resize: none; outline: none; font-family: 'Consolas', 'Courier New', monospace; font-size: 14px; background: #2f343f; color: #dfdbd2; user-select: text; -webkit-user-select: text; }
@@ -81,7 +82,7 @@ body {
 .terminal-prompt { color: #87cf3e; font-weight: bold; white-space: nowrap; }
 .terminal-input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-family: inherit; font-size: inherit; user-select: text; -webkit-user-select: text; }
 
-/* ВЕБ-ПРОСМОТРЩИК (WEB VIEWER) И БРАУЗЕР */
+/* ВЕБ-ПРОСМОТРЩИК И БРАУЗЕР */
 .browser-container { display: flex; flex-direction: column; height: 100%; background: #2f343f; }
 .browser-bar { background: #21252b; padding: 8px; display: flex; gap: 6px; border-bottom: 1px solid #1c1f24; }
 .browser-input { flex: 1; padding: 6px 12px; border: 1px solid #3c424f; border-radius: 4px; font-size: 13px; background: #2f343f; color: #fff; outline: none; }
@@ -102,7 +103,7 @@ body {
 .calc-btn-item.eq:hover { background: #9be74c; }
 .calc-btn-itemNum.zero { grid-column: span 2; }
 
-/* ШТОРКА СИСТЕМНОГО УПРАВЛЕНИЯ */
+/* ШТОРКА МОНИТОРИНГА РЕСУРСОВ ПК */
 .quick-settings-panel { position: absolute; bottom: -400px; right: 15px; width: 300px; background: rgba(33, 37, 43, 0.96); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); padding: 16px; display: flex; flex-direction: column; gap: 12px; z-index: 9997; transition: bottom 0.2s ease; }
 .quick-settings-panel.open { bottom: 60px; }
 .quick-settings-panel h3 { font-size: 14px; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px; }
@@ -111,18 +112,6 @@ body {
 .theme-buttons { display: flex; gap: 6px; }
 .theme-btn { flex: 1; padding: 6px; font-size: 11px; background: #383c4a; border: 1px solid #434855; color: #fff; border-radius: 4px; cursor: pointer; font-weight: 600; }
 .theme-btn:hover { background: #434855; border-color: #87cf3e; }
-
-/* МЕНЕДЖЕР ПРОГРАММ С УСТАНОВКОЙ ЧЕРЕЗ APT */
-.store-layout { padding: 20px; overflow-y: auto; height: 100%; background: #2f343f; color: #dfdbd2; }
-.store-layout h2 { font-size: 18px; margin-bottom: 15px; color: #fff; }
-.store-grid { display: flex; gap: 16px; flex-wrap: wrap; }
-.store-card { background: #21252b; border: 1px solid #3c424f; border-radius: 6px; padding: 16px; width: 230px; display: flex; flex-direction: column; gap: 10px; }
-.store-card h3 { color: #fff; font-size: 14px; }
-.store-card p { font-size: 12px; color: #a4a9b6; line-height: 1.4; }
-.store-btn-install { padding: 8px; background: #87cf3e; color: #111; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; text-align: center; }
-.store-btn-install:hover { background: #9be74c; }
-.progress-container { width: 100%; height: 6px; background: #383c4a; border-radius: 3px; display: none; overflow: hidden; }
-.progress-bar { width: 0%; height: 100%; background: #87cf3e; transition: width 0.08s linear; }
 
 /* ГИБРИДНОЕ МЕНЮ СТАРТ MINTOS */
 .start-menu { position: absolute; bottom: -650px; left: 50%; transform: translateX(-50%); width: 560px; height: 500px; background: rgba(33, 37, 43, 0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); z-index: 9998; display: flex; flex-direction: column; padding: 20px; transition: bottom 0.2s cubic-bezier(0.1, 0.9, 0.2, 1); }
