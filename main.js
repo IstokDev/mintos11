@@ -19,7 +19,7 @@ const localWebDatabase = {
             results.push({ title: 'ВКонтакте (Локальный прокси-клиент)', desc: 'Общайтесь с друзьями, делитесь фотографиями и смотрите видео.', action: 'vk' });
         }
         if (q.includes('майн') || q.includes('mine') || q.includes('minecraft')) {
-            results.push({ title: 'Minecraft Web Edition', desc: 'Официальный дистрибутив и запуск игры прямо в окне системы.', action: 'minecraft' });
+            results.push({ title: 'Minecraft Java Edition (Eaglercraft)', desc: 'Полноценная рабочая 3D-версия Майнкрафт 1.5.2 прямо внутри нашего эмулятора.', action: 'minecraft' });
         }
         if (results.length === 0) {
             results.push({ title: `Результаты безопасного поиска для: "${query}"`, desc: 'Оффлайн-прокси успешно обработал запрос. Для тестирования попробуйте ввести в поиск: гугл, новости, вики или майнкрафт.', action: 'generic' });
@@ -40,7 +40,7 @@ const localWebDatabase = {
             return `<div style="background:#0077FF;color:white;padding:25px;height:100vh;font-family:sans-serif;"><h2>ВКонтакте для WebOS</h2><p style="margin-top:10px;font-size:14px;">Локальный прокси-профиль администратора успешно загружен. Сетевые блокировки безопасности Cross-Origin полностью обойдены.</p></div>`;
         }
         if (action === 'minecraft') {
-            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📦 Управление пакетом Minecraft Web</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;">Клиент успешно проксирован через репозитории Apt Store. Чтобы запустить полную 3D игру, воспользуйтесь Менеджером Программ на рабочем столе!</p></div>`;
+            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📦 Управление пакетом Minecraft Web (Eaglercraft)</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;">Официальный сайт заблокирован, поэтому мы интегрировали стабильное 3D-ядро! Чтобы запустить настоящую игру, перейдите в <b>Менеджер Программ (Apt Store)</b> на рабочем столе и установите пакет!</p></div>`;
         }
         return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Оффлайн страница Прокси</h2><p style="margin-top:10px;font-size:14px;">Вы перешли на тестовую текстовую страницу эмулятора. Контент успешно обработан внутренним движком рендеринга.</p></div>`;
     }
@@ -312,6 +312,7 @@ function initBatteryStatus() {
         batEl.innerText = "🔋 Батарея: 100% (API не подд.)";
     }
 }
+
 document.addEventListener('DOMContentLoaded', () => {
     // Инициализация часов и статуса батареи при загрузке ядра
     startSystemClock();
@@ -334,7 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('taskbar-notepad').addEventListener('click', () => {
         openedFileName = null;
         document.getElementById('notepadText').value = "";
-        document.getElementById('notepad-title').innerText = "📝 Xed — Новый file";
+        document.getElementById('notepad-title').innerText = "📝 Xed — Новый файл";
         document.getElementById('btn-run-code').style.display = 'none';
         openWindow('notepad');
     });
@@ -363,7 +364,6 @@ document.addEventListener('DOMContentLoaded', () => {
             alert(`Системные обои переключены на режим: ${e.target.innerText}`);
         });
     });
-
     // Очистка Системной корзины (Фича 2)
     document.getElementById('btn-empty-trash').addEventListener('click', () => {
         if (trashContainer.length === 0) return;
@@ -484,4 +484,3 @@ document.addEventListener('DOMContentLoaded', () => {
     renderExplorer('root');
     renderTrashView();
 });
-
