@@ -13,13 +13,13 @@ const localWebDatabase = {
             results.push({ title: 'Википедия — Свободная энциклопедия', desc: 'Миллионы статей на любые темы, создаваемые пользователями.', action: 'wiki' });
         }
         if (q.includes('новост') || q.includes('news')) {
-            results.push({ title: 'Служба новостей PutterOS', desc: 'Главные события: Наша игровая веб-система переведена в ультра-автономный режим!', action: 'news' });
+            results.push({ title: 'Служба новостей Wintux OS', desc: 'Главные события: Наш гибридный дистрибутив Wintux переведен в ультра-автономный режим!', action: 'news' });
         }
         if (q.includes('вк') || q.includes('vk') || q.includes('vkontakte')) {
             results.push({ title: 'ВКонтакте (Локальный прокси-клиент)', desc: 'Общайтесь с друзьями, делитесь фотографиями и смотрите видео.', action: 'vk' });
         }
         if (q.includes('ютуб') || q.includes('youtube') || q.includes('видео') || q.includes('video')) {
-            results.push({ title: 'YouTube Видео-Хаб', desc: 'Смотрите любимые видеоролики и стримы прямо внутри окна эмулятора без лагов и блокировок фреймов.', action: 'youtube' });
+            results.push({ title: 'YouTube Видео-Хаб Wintux', desc: 'Смотрите любимые видеоролики и стримы прямо внутри окна эмулятора без лагов и блокировок фреймов.', action: 'youtube' });
         }
         if (results.length === 0) {
             results.push({ title: `Результаты безопасного поиска для: "${query}"`, desc: 'Оффлайн-прокси успешно обработал запрос. Для тестирования попробуйте ввести в поиск: гугл, новости, вики или ютуб.', action: 'generic' });
@@ -31,10 +31,10 @@ const localWebDatabase = {
             return `<div style="text-align:center;padding:35px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h1 style="font-size:42px;margin:0;"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></h1><input type="text" style="width:85%;padding:12px 15px;border:1px solid #dfe1e5;border-radius:24px;margin-top:20px;outline:none;box-shadow:0 1px 6px rgba(32,33,36,0.28);" value="Поиск проксирован через верхнюю панель Edge!"><br><button style="margin-top:20px;padding:10px 20px;background:#f8f9fa;border:1px solid #f8f9fa;border-radius:4px;cursor:pointer;color:#3c4043;font-weight:bold;">Поиск в сети Proxy</button></div>`;
         }
         if (action === 'wiki') {
-            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Википедия — PutterOS Edition</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Википедия</b> работает внутри эмулятора через изолированные текстовые ноды. Это гарантирует защиту вашего смартфона или ПК от CORS-блокировок и ошибок frame-ancestors на 100%.</p></div>`;
+            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>🌐 Википедия — Wintux Edition</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Википедия</b> работает внутри эмулятора через изолированные текстовые ноды. Это гарантирует защиту вашего смартфона или ПК от CORS-блокировок и ошибок frame-ancestors на 100%.</p></div>`;
         }
         if (action === 'news') {
-            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📰 Вестник PutterOS</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Важное обновление:</b> Мы полностью пересобрали систему под игровой Путтер! Убрали все ломающиеся внешние магазины и зависимости. Теперь игры запускаются в один клик с рабочего стола, а браузер поддерживает просмотр видео.</p></div>`;
+            return `<div style="padding:20px;background:#fff;height:100vh;color:#000;font-family:sans-serif;"><h2>📰 Вестник Wintux OS</h2><p style="margin-top:12px;line-height:1.6;font-size:14px;"><b>Важное обновление:</b> Мы полностью пересобрали систему и дали ей имя Wintux! Игры запускаются в один клик с рабочего стола, а браузер поддерживает просмотр видео.</p></div>`;
         }
         if (action === 'vk') {
             return `<div style="background:#0077FF;color:white;padding:25px;height:100vh;font-family:sans-serif;"><h2>ВКонтакте для WebOS</h2><p style="margin-top:10px;font-size:14px;">Локальный прокси-профиль администратора успешно загружен. Сетевые блокировки безопасности Cross-Origin полностью обойдены.</p></div>`;
@@ -58,7 +58,7 @@ function processSearch() {
     if (!input || !frame) return;
 
     const results = localWebDatabase.search(input);
-    let resultsHTML = `<div style="padding:20px;font-family:sans-serif;background:#fff;height:100%;overflow-y:auto;color:#000;"><h3>Результаты оффлайн-поиска PutterOS:</h3><div style="display:flex;flex-direction:column;gap:16px;margin-top:15px;">`;
+    let resultsHTML = `<div style="padding:20px;font-family:sans-serif;background:#fff;height:100%;overflow-y:auto;color:#000;"><h3>Результаты оффлайн-поиска WintuxOS:</h3><div style="display:flex;flex-direction:column;gap:16px;margin-top:15px;">`;
     
     results.forEach((res, index) => {
         resultsHTML += `<div style="cursor:pointer;" id="search-link-${index}"><h4 style="color:#1a0dab;margin:0;font-size:16px;">${res.title}</h4><p style="color:#4d5156;margin:4px 0 0 0;font-size:13px;">${res.desc}</p></div>`;
@@ -80,14 +80,14 @@ function processSearch() {
     };
 }
 
-// Локальный терминальный движок (bash)
+// Локальный терминальный движок (bash) под wintux_pc
 const bashSimulator = {
     execute(commandStr) {
         const trimmed = commandStr.trim();
         if (!trimmed) return '';
         
         const args = trimmed.split(' ');
-        const cmd = args[0].toLowerCase();
+        const cmd = args.toLowerCase();
         const param = args.length > 1 ? args.slice(1).join(' ') : '';
         
         switch(cmd) {
@@ -96,8 +96,8 @@ const bashSimulator = {
                 return 'clear_screen';
                 
             case 'help':
-                return `Доступные команды PutterOS:\n` +
-                       `  neofetch    - Вывести характеристики игрового Путтера\n` +
+                return `Доступные команды Wintux OS:\n` +
+                       `  neofetch    - Вывести характеристики wintux_pc\n` +
                        `  ls          - Показать файлы в текущей папке\n` +
                        `  mkdir [имя] - Создать новую директорию\n` +
                        `  rm [имя]    - Переместить файл в Корзину\n` +
@@ -105,17 +105,17 @@ const bashSimulator = {
                        `  help        - Вывести эту справку`;
                        
             case 'neofetch':
-                return `[GREEN]          eeeeeeeeeeeeeeeee[RESET]    user@putter_pc\n` +
+                return `[GREEN]          eeeeeeeeeeeeeeeee[RESET]    user@wintux_pc\n` +
                        `[GREEN]      eeeeeeeeeeeeeeeeeeeeeee[RESET]  -------------\n` +
-                       `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   OS: PutterOS v2.0 (Gaming & Dev Edition)\n` +
-                       `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]fffff[RESET]  Kernel: WebOS Performance Engine 2026\n` +
-                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Uptime: 10 mins\n` +
-                       `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Shell: bash simulator v1.5\n` +
+                       `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   OS: Wintux OS v3.0 (Linux Mint / Win11 Hybrid)\n` +
+                       `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]fffff[RESET]  Kernel: Wintux Secure Core 2026\n` +
+                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Uptime: 1 min\n` +
+                       `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Shell: bash simulator v1.8\n` +
                        `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Resolution: ${window.innerWidth}x${window.innerHeight}\n` +
-                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  DE: Cinnamon-Mica Ultra\n` +
-                       `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]ffff[RESET]   WM: PutterWindowManager\n` +
-                       `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   Terminal: putter-terminal-js\n` +
-                       `[GREEN]      eeeeeeeeeeeeeeeeeeeeeee[RESET]  Memory: 1.2GB / 16GB (Ultra Performance)`;
+                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  DE: Cinnamon-Mica Secure\n" +
+                       `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]ffff[RESET]   WM: WintuxWindowManager\n` +
+                       `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   Terminal: wintux-terminal-js\n` +
+                       `[GREEN]      eeeeeeeeeeeeeeeeeeeeeee[RESET]  Memory: 1.2GB / 16GB (Ultra Sandbox)`;
                        
             case 'ls':
                 const files = FSCore.getFiles(currentFolder);
@@ -200,7 +200,7 @@ function renderExplorer(folderKey) {
     });
 }
 
-// Логика перемещения файлов в Корзину (Фича 2)
+// Логика перемещения файлов в Корзину
 function moveToTrash(filename) {
     const fileList = FSCore.getFiles(currentFolder);
     const targetFile = fileList.find(f => f.name === filename);
@@ -215,7 +215,6 @@ function moveToTrash(filename) {
     renderTrashView();
     alert(`Файл "${filename}" успешно отправлен в Корзину.`);
 }
-
 // Отрисовка файлов внутри окна Корзины
 function renderTrashView() {
     const trashView = document.getElementById('trashFileView');
@@ -280,6 +279,7 @@ function calculateResult() {
     if (!display || !calcExpression) return;
     
     try {
+        // Безопасное математическое вычисление встроенным интерпретатором JS
         const result = Function('"use strict";return (' + calcExpression + ')')();
         display.value = result;
         calcExpression = result.toString();
@@ -323,39 +323,210 @@ function initBatteryStatus() {
     }
 }
 
-// Функция проигрывания звука Linux Mint при первом клике на стол
+// Управление экраном блокировки, авторизацией и паролями Wintux OS
+function checkSystemAuth() {
+    const savedPassword = localStorage.getItem('wintux_sys_pwd');
+    const authScreen = document.getElementById('wintux-auth-screen');
+    const titleEl = document.getElementById('auth-title');
+    
+    if (!authScreen) return;
+    authScreen.style.display = 'flex';
+
+    if (!savedPassword) {
+        // Если пароля ещё нет в системе, предлагаем создать его при первом включении
+        titleEl.innerText = "Создание пароля Wintux";
+        document.getElementById('auth-password-input').placeholder = "Придумайте пароль...";
+    } else {
+        titleEl.innerText = "Вход в Wintux OS";
+        document.getElementById('auth-password-input').placeholder = "Введите пароль...";
+    }
+}
+
+// Обработчик кнопки отправки пароля
+function submitAuthPassword() {
+    const inputEl = document.getElementById('auth-password-input');
+    const errorEl = document.getElementById('auth-error-msg');
+    const authScreen = document.getElementById('wintux-auth-screen');
+    const savedPassword = localStorage.getItem('wintux_sys_pwd');
+    
+    if (!inputEl) return;
+    const value = inputEl.value.trim();
+
+    if (!value) {
+        alert("Пароль не может быть пустым!");
+        return;
+    }
+
+    if (!savedPassword) {
+        // Первая установка пароля
+        localStorage.setItem('wintux_sys_pwd', value);
+        alert("Пароль успешно создан! Запоминайте его.");
+        if (errorEl) errorEl.style.display = 'none';
+        if (authScreen) authScreen.style.display = 'none';
+        playSystemLogin(); // Проигрываем звук приветствия Mint
+    } else {
+        // Проверка существующего пароля
+        if (value === savedPassword) {
+            if (errorEl) errorEl.style.display = 'none';
+            if (authScreen) authScreen.style.display = 'none';
+            inputEl.value = '';
+            playSystemLogin(); // Успешный вход со звуком
+        } else {
+            if (errorEl) {
+                errorEl.style.display = 'block';
+                errorEl.innerText = "Неверный пароль! Доступ заблокирован.";
+            }
+            inputEl.value = '';
+        }
+    }
+}
+
+// Функция проигрывания звука Linux Mint при успешном входе
 function playSystemLogin() {
     const audio = document.getElementById('login-sound');
     if (audio) {
-        audio.play().catch(e => console.log("Браузер ждет клика пользователя для аудио"));
+        audio.play().catch(e => console.log("Браузер заблокировал автоплей до клика"));
     }
-    document.removeEventListener('click', playSystemLogin);
-    document.removeEventListener('touchstart', playSystemLogin);
+}
+// Обработчики Plymouth анимации (Включение, перезагрузка и выключение)
+function triggerSystemShutdown() {
+    const plymouth = document.getElementById('plymouth-screen');
+    const statusText = document.getElementById('plymouth-status');
+    const powerBtn = document.getElementById('btn-boot-pc');
+    const startMenu = document.getElementById('start-menu');
+    const logoutDlg = document.getElementById('mint-logout-dialog');
+    
+    if (startMenu) startMenu.classList.remove('open');
+    if (logoutDlg) logoutDlg.style.display = 'none';
+    if (!plymouth) return;
+
+    plymouth.style.display = 'flex';
+    if (statusText) statusText.innerText = "Завершение процессов Wintux OS... Снижение питания disk_core...";
+    if (powerBtn) powerBtn.style.display = 'none';
+    
+    // Эмулируем затухание системы через 3 секунды
+    setTimeout(() => {
+        if (statusText) statusText.innerText = "Система выключена (wintux_pc halted).";
+        const spinner = plymouth.querySelector('.plymouth-spinner');
+        if (spinner) spinner.style.display = 'none';
+        if (powerBtn) powerBtn.style.display = 'block'; // Появляется кнопка включения
+    }, 3000);
 }
 
-// Безопасный запуск всех обработчиков интерфейса
+function triggerSystemBoot() {
+    const plymouth = document.getElementById('plymouth-screen');
+    const statusText = document.getElementById('plymouth-status');
+    const powerBtn = document.getElementById('btn-boot-pc');
+    const spinner = plymouth.querySelector('.plymouth-spinner');
+    
+    if (!plymouth) return;
+    if (powerBtn) powerBtn.style.display = 'none';
+    if (spinner) spinner.style.display = 'block';
+
+    let stages = [
+        "Инициализация ядра Wintux Core 2026...",
+        "Проверка секторов LocalStorage (nemo_fs)... OK",
+        "Монтирование Cinnamon-Mica Hybrid DE...",
+        "Запуск сетевых Proxy-декодеров Edge..."
+    ];
+
+    let currentStage = 0;
+    const interval = setInterval(() => {
+        if (currentStage < stages.length) {
+            if (statusText) statusText.innerText = stages[currentStage];
+            currentStage++;
+        } else {
+            clearInterval(interval);
+            plymouth.style.display = 'none'; // Скрываем загрузочный экран
+            checkSystemAuth(); // Переходим к экрану ввода пароля
+        }
+    }, 1000);
+}
+
+// Инициализация всех событий системы при загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // Включаем ожидание клика/тача для обхода блокировки автоплея звука браузерами
-    document.addEventListener('click', playSystemLogin);
-    document.addEventListener('touchstart', playSystemLogin);
+    // Автоматический запуск Plymouth анимации при старте страницы
+    triggerSystemBoot();
 
-    // Запускаем службы мониторинга
-    startSystemClock();
-    initBatteryStatus();
+    // Кнопки экрана авторизации
+    const submitAuthBtn = document.getElementById('btn-submit-auth');
+    if (submitAuthBtn) submitAuthBtn.addEventListener('click', submitAuthPassword);
+    
+    const authInput = document.getElementById('auth-password-input');
+    if (authInput) {
+        authInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitAuthPassword(); });
+    }
 
-    // Безопасная привязка ярлыков Рабочего стола
+    // Кнопка включения на черном экране
+    const bootBtn = document.getElementById('btn-boot-pc');
+    if (bootBtn) bootBtn.addEventListener('click', () => {
+        const spinner = document.getElementById('plymouth-screen').querySelector('.plymouth-spinner');
+        if (spinner) spinner.style.display = 'block';
+        triggerSystemBoot();
+    });
+    // 1. Поведение диалогового окна выключения Linux Mint
+    const startPowerBtn = document.getElementById('start-power-btn');
+    const logoutDlg = document.getElementById('mint-logout-dialog');
+    const startMenu = document.getElementById('start-menu');
+
+    if (startPowerBtn && logoutDlg) {
+        startPowerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (startMenu) startMenu.classList.remove('open');
+            logoutDlg.style.display = 'flex';
+        });
+    }
+
+    // Кнопки внутри диалога Mint
+    const dlgCancel = document.getElementById('dlg-btn-cancel');
+    if (dlgCancel && logoutDlg) dlgCancel.addEventListener('click', () => logoutDlg.style.display = 'none');
+
+    const dlgLock = document.getElementById('dlg-btn-lock');
+    if (dlgLock && logoutDlg) {
+        dlgLock.addEventListener('click', () => {
+            logoutDlg.style.display = 'none';
+            checkSystemAuth(); // Блокируем экран
+        });
+    }
+
+    const dlgReboot = document.getElementById('dlg-btn-reboot');
+    if (dlgReboot) {
+        dlgReboot.addEventListener('click', () => {
+            if (logoutDlg) logoutDlg.style.display = 'none';
+            triggerSystemBoot(); // Перезагрузка
+        });
+    }
+
+    const dlgShutdown = document.getElementById('dlg-btn-shutdown');
+    if (dlgShutdown) dlgShutdown.addEventListener('click', triggerSystemShutdown);
+
+    // 2. Безопасная привязка ярлыков Рабочего стола Wintux
     const shortcuts = {
         'shortcut-explorer': 'explorer',
         'shortcut-terminal': 'terminal',
         'shortcut-browser': 'browser',
         'shortcut-calc': 'calc',
         'shortcut-trash': 'trash-window',
-        'shortcut-cs': 'cs',
-        'shortcut-mc': 'app-mc'
+        'shortcut-cs': 'cs'
     };
     for (let id in shortcuts) {
         const el = document.getElementById(id);
         if (el) el.addEventListener('click', () => openWindow(shortcuts[id]));
+    }
+
+    // Кроссплатформенный Тач-фикс для Counter-Strike 1.6 на телефонах
+    const csShortcut = document.getElementById('shortcut-cs');
+    if (csShortcut) {
+        csShortcut.addEventListener('click', () => {
+            // Если зашли со смартфона (ширина экрана маленькая), включаем тач-помощник
+            if (window.innerWidth <= 768) {
+                const helper = document.getElementById('cs-mobile-touch-helper');
+                if (helper) helper.style.display = 'block';
+                // Автоматически разворачиваем CS на весь экран телефона
+                const csWin = document.getElementById('cs');
+                if (csWin) csWin.classList.add('maximized');
+            }
+        });
     }
     
     const shortcutNotepad = document.getElementById('shortcut-notepad');
@@ -369,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Безопасная привязка элементов Панели задач Cinnamon
+    // 3. Безопасная привязка элементов Панели задач Wintux
     const taskbarIcons = {
         'taskbar-explorer': 'explorer',
         'taskbar-terminal': 'terminal',
@@ -385,13 +556,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskbarNotepad = document.getElementById('taskbar-notepad');
     if (taskbarNotepad) taskbarNotepad.addEventListener('click', () => openWindow('notepad'));
 
-    // Логика работы гибридного Меню Пуск
-    const startBtn = document.getElementById('start-menu-btn');
-    const startMenu = document.getElementById('start-menu');
+    // Логика работы гибридного Меню Пуск Wintux
     if (startBtn && startMenu) {
         startBtn.addEventListener('click', (e) => { e.stopPropagation(); startMenu.classList.toggle('open'); });
         document.addEventListener('click', () => startMenu.classList.remove('open'));
-        startMenu.addEventListener('click', (e) => e.stopPropagation());
+        startMenu.classList.remove('open');
     }
 
     // Запуск приложений внутри Меню Пуск
@@ -407,8 +576,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('click', () => openWindow(startApps[id]));
     }
-    // Управление оконными интерфейсами (Закрытие и Максимизация)
-    ['explorer', 'notepad', 'terminal', 'browser', 'cs', 'app-mc', 'web-viewer', 'calc', 'trash-window'].forEach(id => {
+    // 4. Управление оконными интерфейсами (Закрытие и Максимизация)
+    ['explorer', 'notepad', 'terminal', 'browser', 'cs', 'web-viewer', 'calc', 'trash-window'].forEach(id => {
         const closeBtn = document.getElementById('close-' + id);
         if (closeBtn) closeBtn.addEventListener('click', () => closeWindow(id));
     });
@@ -417,11 +586,14 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => toggleMaximize(e.target.getAttribute('data-window')));
     });
 
-    // Логика Шторки уведомлений и переключателя CSS-обоев
+    // 5. Логика Шторки уведомлений и переключателя CSS-обоев
     const clockBtn = document.getElementById('system-clock');
     const settingsPanel = document.getElementById('quick-settings');
     if (clockBtn && settingsPanel) {
-        clockBtn.addEventListener('click', (e) => { e.stopPropagation(); settingsPanel.classList.toggle('open'); });
+        clockBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsPanel.classList.toggle('open');
+        });
         document.addEventListener('click', () => settingsPanel.classList.remove('open'));
         settingsPanel.addEventListener('click', (e) => e.stopPropagation());
     }
@@ -436,7 +608,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Функции Текстового редактора Xed и компилятора HTML
+    // 6. Функции Текстового редактора Xed и компилятора HTML
     const saveNoteBtn = document.getElementById('btn-save-note');
     if (saveNoteBtn) {
         saveNoteBtn.addEventListener('click', () => {
@@ -460,7 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Системная очистка Корзины
+    // 7. Системная очистка Корзины
     const emptyTrashBtn = document.getElementById('btn-empty-trash');
     if (emptyTrashBtn) {
         emptyTrashBtn.addEventListener('click', () => {
@@ -471,7 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Интерактивная обработка ввода в Терминале Linux
+    // 8. Интерактивная обработка ввода в Терминале Linux Wintux
     const termInput = document.getElementById('terminal-input');
     const termHistory = document.getElementById('terminal-history');
     const clickZone = document.getElementById('terminal-click-zone');
@@ -482,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.key === 'Enter') {
                 const rawCmd = termInput.value; termInput.value = '';
                 const userLine = document.createElement('div');
-                userLine.innerHTML = `<span style="color:#87cf3e;font-weight:bold;">user@putter_pc:~$</span> ${rawCmd}`;
+                userLine.innerHTML = `<span style="color:#87cf3e;font-weight:bold;">user@wintux_pc:~$</span> ${rawCmd}`;
                 termHistory.appendChild(userLine);
                 const output = bashSimulator.execute(rawCmd);
                 if (output && output !== 'clear_screen') {
@@ -496,7 +668,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Поисковая строка Браузера и создание папок в Nemo
+    // 9. Поисковая строка Браузера и создание папок в Nemo
     const btnNavigate = document.getElementById('btnNavigate');
     const urlInput = document.getElementById('urlInput');
     if (btnNavigate) btnNavigate.addEventListener('click', processSearch);
@@ -514,8 +686,8 @@ document.addEventListener('DOMContentLoaded', () => {
         item.addEventListener('click', (e) => renderExplorer(e.target.getAttribute('data-folder')));
     });
 
-    // Активация драг-менеджера и фокуса для всех окон PutterOS
-    ['explorer', 'notepad', 'terminal', 'browser', 'cs', 'app-mc', 'web-viewer', 'calc', 'trash-window'].forEach(id => {
+    // 10. Активация драг-менеджера и фокуса для всех окон Wintux OS
+    ['explorer', 'notepad', 'terminal', 'browser', 'cs', 'web-viewer', 'calc', 'trash-window'].forEach(id => {
         initDrag('header-' + id, id);
         const winEl = document.getElementById(id);
         if (winEl) winEl.addEventListener('pointerdown', function() { focusWindow(this); });
@@ -525,4 +697,3 @@ document.addEventListener('DOMContentLoaded', () => {
     renderExplorer('root');
     renderTrashView();
 });
-
