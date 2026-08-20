@@ -1,584 +1,410 @@
 let currentFolder = 'root';
 let openedFileName = null;
-let trashContainer = [];
 let calcExpression = "";
 
-// ТВОЯ ЛИЧНАЯ ФИРМЕННАЯ СЛУЖБА: WINTUX TUNING & GPU BOOSTER
-const wintuxGPUBooster = {
-    currentMode: "STANDART",
-    isTurbo: false,
+// 1. СЛУЖБА КВАНТОВЫХ ЧАСОВ И СИНХРОНИЗАЦИИ ВРЕМЕНИ СЕКУНДА В СЕКУНДУ
+function initWindowsClock() {
+    const lockTime = document.getElementById('lock-time');
+    const lockDate = document.getElementById('lock-date');
+    const trayTime = document.getElementById('tray-time');
+    const trayDate = document.getElementById('tray-date');
     
-    setMode(mode) {
-        this.currentMode = mode;
-        const modeText = document.getElementById('booster-mode-text');
-        const clockText = document.getElementById('gpu-clock-text');
-        const fanText = document.getElementById('gpu-fan-text');
-        const logBox = document.getElementById('booster-log-box');
+    setInterval(() => {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        const trayTimeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const lockDateStr = now.toLocaleDateString('ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+        const trayDateStr = now.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
         
-        if (!logBox) return;
+        if (lockTime) lockTime.innerText = timeStr;
+        if (lockDate) lockDate.innerText = lockDateStr.charAt(0).toUpperCase() + lockDateStr.slice(1);
+        if (trayTime) trayTime.innerText = trayTimeStr;
+        if (trayDate) trayDate.innerText = trayDateStr;
+    }, 1000);
+}
 
-        if (mode === "TURBO") {
-            this.isTurbo = true;
-            if (modeText) modeText.innerHTML = "🔥 NVIDIA TURBO BOOST ACTIVE";
-            if (modeText) modeText.style.color = "#87cf3e";
-            if (clockText) clockText.innerText = "2150 MHz (OC)";
-            if (fanText) fanText.innerText = "Performance (85%)";
-            logBox.innerText += "\n[SYSTEM]: Запущен разгон шины PCIe и ядер CUDA...";
-            logBox.innerText += "\n[SYSTEM]: Оптимизация под Samsung Galaxy & PC завершена.";
-        } else {
-            this.isTurbo = false;
-            if (modeText) modeText.innerHTML = "🌿 STANDART (ECO)";
-            if (modeText) modeText.style.color = "#ffcc00";
-            if (clockText) clockText.innerText = "1450 MHz";
-            if (fanText) fanText.innerText = "Auto (45%)";
-            logBox.innerText += "\n[SYSTEM]: Переключение в штатный энергосберегающий режим.";
-        }
-        logBox.scrollTop = logBox.scrollHeight;
+// 2. ДИСПЕТЧЕР ОПРОСА ЗАРЯДА БАТАРЕИ GALAXY & LAPTOP
+function initWindowsBattery() {
+    const batteryEl = document.getElementById('tray-battery');
+    if (!batteryEl) return;
+    if (navigator.getBattery) {
+        navigator.getBattery().then(battery => {
+            function updateInfo() {
+                const level = Math.round(battery.level * 100);
+                batteryEl.innerText = `🔋 ${level}%${battery.charging ? " ⚡" : ""}`;
+            }
+            updateInfo();
+            battery.addEventListener('levelchange', updateInfo);
+            battery.addEventListener('chargingchange', updateInfo);
+        });
+    } else {
+        batteryEl.innerText = "🔌 100%";
     }
-};
+}
 
-// ТЕРМИНАЛЬНЫЙ ДВИЖОК BASH С ТВОЕЙ СИСТЕМОЙ ЭМУЛЯЦИИ NVIDIA-SMI
-const bashSimulator = {
+// 3. УНИКАЛЬНЫЙ СЦЕНАРИЙ ЗАГРУЗКИ QUANTUM BOOT (БЕЗ КОПИРОВАНИЯ BIOS И WINDOWS)
+function runWindowsBootSequence() {
+    const bootScreen = document.getElementById('aura-boot-screen');
+    const statusText = document.getElementById('aura-boot-status');
+    const welcomeScreen = document.getElementById('aura-welcome-screen');
+    const startupSound = document.getElementById('aura-startup-sound');
+
+    if (!bootScreen) return;
+
+    // Логи загрузки твоих игровых ядер AuraOS
+    let bootStages = [
+        "Loading Aura_Core Framework v5.0...",
+        "Initializing Glassmorphic Render Engine... OK",
+        "Mounting Aura_Disk storage (V:)... OK",
+        "Preloading Counter-Strike 1.6 secure node...",
+        "AuraOS Core fully loaded. Ready for auth."
+    ];
+
+    let currentStage = 0;
+    const bootInterval = setInterval(() => {
+        if (currentStage < bootStages.length) {
+            if (statusText) statusText.innerText = bootStages[currentStage];
+            currentStage++;
+        } else {
+            clearInterval(bootInterval);
+            bootScreen.style.display = 'none';
+            if (welcomeScreen) welcomeScreen.style.display = 'flex';
+            if (startupSound) {
+                startupSound.play().catch(() => console.log("Аудиосистемы ждут первого клика пользователя"));
+            }
+        }
+    }, 900);
+}
+// 4. ФИРМЕННЫЙ КИБЕР-ПРОЦЕССОР AURA TERMINAL
+const cmdSimulator = {
     execute(commandStr) {
         const trimmed = commandStr.trim();
         if (!trimmed) return '';
-        
         const args = trimmed.split(' ');
         const cmd = args[0].toLowerCase();
         const param = args.length > 1 ? args.slice(1).join(' ') : '';
         
         switch(cmd) {
             case 'clear':
-                const history = document.getElementById('terminal-history');
-                if (history) history.innerHTML = '';
-                return 'clear_screen';
+                const historyEl = document.getElementById('cmd-history');
+                if (historyEl) historyEl.innerHTML = '';
+                return 'cls_active';
                 
             case 'help':
-                return `Доступные команды Wintux OS:\n` +
-                       `  neofetch    - Вывести спецификации Wintux ПК и смартфона\n` +
-                       `  nvidia-smi  - Проверить статус видеокарты Extreme Tuning\n` +
-                       `  ls          - Показать файлы текущей директории Nemo\n` +
-                       `  mkdir [имя] - Создать новую папку на виртуальном диске\n` +
-                       `  rm [имя]    - Переместить выбранный файл в Корзину\n` +
-                       `  clear       - Полностью очистить консоль\n` +
-                       `  help        - Показать текущую справку`;
+                return `Доступные кибер-команды AuraOS Core:\n` +
+                       `  info        - Показать спецификации независимого ядра\n` +
+                       `  matrix      - Активировать протокол цифрового дождя\n` +
+                       `  dir         - Вывести структуру каталогов накопителя V:\n` +
+                       `  mkdir [имя] - Выделить сектор под новую папку\n` +
+                       `  clear       - Полностью очистить терминал`;
                        
-            case 'nvidia-smi':
-                const isTurboActive = wintuxGPUBooster.isTurbo;
-                return `+-----------------------------------------------------------------------------+\n` +
-                       `| NVIDIA-SMI 535.113.01   Driver Version: 535.113.01   CUDA Version: 12.2     |\n` +
-                       `|-------------------------------+----------------------+----------------------+\n` +
-                       `| GPU  Name          Persistence| Bus-Id        Disp.A | Volatile Uncorr. ECC |\n` +
-                       `| Fan  Temp   Perf          Pwr:|       Memory-Usage   | GPU-Util  Compute M. |\n` +
-                       `|===============================+======================+======================|\n` +
-                       `|   0  Wintux GPU OC    On      | 00000000:01:00.0  On |                  N/A |\n` +
-                       `| ${isTurboActive ? '85%' : '45%'}   62C    P2      ${isTurboActive ? '145W' : '45W'} |   2105MiB / 16384MiB |   ${isTurboActive ? '98%' : '12%'}      Default |\n` +
-                       `+-------------------------------+----------------------+----------------------+\n` +
-                       `| Режим Booster: ${isTurboActive ? '[TURBO OC ACTIVE]' : '[STANDART CLOCK]'}                                    |\n` +
-                       `+-----------------------------------------------------------------------------+`;
-
-            case 'neofetch':
-                return `[GREEN]          eeeeeeeeeeeeeeeee[RESET]    user@wintux_pc\n` +
-                       `[GREEN]      eeeeeeeeeeeeeeeeeeeeeee[RESET]  -------------\n` +
-                       `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   OS: Wintux OS Extreme v4.0\n` +
-                       `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]fffff[RESET]  Kernel: Wintux Secure Sandbox Core\n` +
-                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  DE: Cinnamon-Mica Secure DE\n` +
-                       `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Shell: bash simulator v2.5\n` +
-                       `[GREEN]  eee[RESET]  eeeeeeeeeeeeeeee  [GREEN]ffff[RESET]  GPU Tuning: Wintux Tuning & GPU Booster Enabled\n` +
-                       `[GREEN]  eeee[RESET]  eeeeeeeeeeeeeee  [GREEN]ffff[RESET]  Resolution: ${window.innerWidth}x${window.innerHeight}\n` +
-                       `[GREEN]   eeee[RESET]  eeeeeeeeeeeee  [GREEN]ffff[RESET]   Target devices: Ноутбук / Samsung Galaxy\n` +
-                       `[GREEN]    eeeee[RESET]  eeeeeeeeee  [GREEN]fffff[RESET]   Memory: 1.2GB / 16GB Virtual Allocated\n` +
-                       `[GREEN]      eeeeeeeeeeeeeeeeeeeeeee[RESET]  Status: Все ошибки исправлены!`;
+            case 'info':
+                return `👨‍💻 OS Name: AuraOS Next-Gen Web\n` +
+                       `🛸 Core Node: Aura_Core_Engine v5.0\n` +
+                       `🔋 Environment: Ноутбук & Смартфон Galaxy A14 OK\n` +
+                       `⚡ Status: Работает на независимых веб-модулях`;
                        
-            case 'ls':
-                const files = FSCore.getFiles(currentFolder);
-                if (files.length === 0) return 'Папка пуста';
-                return files.map(f => f.type === 'folder' ? `[GREEN]${f.name}/[RESET]` : f.name).join('   ');
+            case 'matrix':
+                setTimeout(() => {
+                    const history = document.getElementById('cmd-history');
+                    if (history) {
+                        let lines = 0;
+                        const matInterval = setInterval(() => {
+                            const line = document.createElement('div');
+                            line.style.color = '#00ffcc';
+                            line.style.fontSize = '12px';
+                            let code = "";
+                            for(let i=0; i<40; i++) code += Math.random() > 0.5 ? "1" : "0";
+                            line.innerText = code;
+                            history.appendChild(line);
+                            history.scrollTop = history.scrollHeight;
+                            lines++;
+                            if (lines > 30) clearInterval(matInterval);
+                        }, 50);
+                    }
+                }, 100);
+                return `[PROTOCOL]: Запуск цифрового дождя Matrix...`;
+                
+            case 'dir':
+                if (typeof FSCore !== 'undefined' && FSCore.getFiles) {
+                    const files = FSCore.getFiles(currentFolder);
+                    if (files.length === 0) return 'Директория накопителя V: пуста.';
+                    return files.map(f => f.type === 'folder' ? `[DIR]     ${f.name}` : `[FILE]    ${f.name}`).join('\n');
+                }
+                return 'Ошибка: накопитель V: не подключен.';
                 
             case 'mkdir':
-                if (!param) return 'mkdir: пропущен операнд имени папки';
-                FSCore.createFolder(currentFolder, param);
-                renderExplorer(currentFolder);
-                return `Директория "${param}" успешно создана.`;
-
-            case 'rm':
-                if (!param) return 'rm: пропущен операнд имени файла';
-                const fileList = FSCore.getFiles(currentFolder);
-                const targetFile = fileList.find(f => f.name === param && f.type === 'file');
-                if (!targetFile) return `rm: невозможно удалить "${param}": такого файла нет`;
-                
-                moveToTrash(param);
-                return `Файл "${param}" перемещен в Корзину.`;
+                if (!param) return 'Синтаксис: mkdir [имя_сектора]';
+                if (typeof FSCore !== 'undefined' && FSCore.createFolder) {
+                    FSCore.createFolder(currentFolder, param);
+                    renderExplorerView(currentFolder);
+                    return `Сектор "${param}" успешно создан на V:.`;
+                }
+                return 'Ошибка записи I/O.';
                 
             default:
-                return `bash: ${cmd}: команда не найдена. Введите "help" для справки.`;
+                return `AuraOS://core_shell: "${cmd}" — неизведанная команда. Наберите "help".`;
         }
     }
 };
 
-// ОТРИСОВКА ВИРТУАЛЬНОГО ДИСКА NEMO
-function renderExplorer(folderKey) {
+// 5. ОТРИСОВКА СЕТКИ ФАЙЛОВ НАКОПИТЕЛЯ V:
+function renderExplorerView(folderKey) {
     currentFolder = folderKey;
-    const view = document.getElementById('fileView');
+    const view = document.getElementById('explorer-file-view');
+    const driveC = document.getElementById('explorer-drive-c');
+    const btnBack = document.getElementById('explorer-btn-root');
     if (!view) return;
+    
     view.innerHTML = '';
+    if (folderKey === 'root') {
+        if (driveC) driveC.style.display = 'flex';
+        if (btnBack) btnBack.style.display = 'none';
+        view.style.display = 'none';
+        return;
+    }
+    
+    if (driveC) driveC.style.display = 'none';
+    if (btnBack) btnBack.style.display = 'inline-block';
+    view.style.display = 'flex';
 
-    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
-    const activeItem = document.querySelector(`.sidebar-item[data-folder="${folderKey}"]`);
-    if (activeItem) activeItem.classList.add('active');
-
-    const files = FSCore.getFiles(folderKey);
-    files.forEach(file => {
-        const item = document.createElement('div');
-        item.className = 'file-item';
-        let icon = file.type === 'folder' ? '📁' : '📄';
-        if (file.name.endsWith('.txt') || file.name.endsWith('.html') || file.name.endsWith('.css') || file.name.endsWith('.js')) {
-            icon = '📝';
-        }
-        
-        item.innerHTML = `<div style="font-size:32px;">${icon}</div><p>${file.name}</p>` +
-                         `${file.type === 'file' ? `<button class="file-delete-btn" title="Удалить">✕</button>` : ''}`;
-        
-        if (file.type === 'file') {
-            const delBtn = item.querySelector('.file-delete-btn');
-            if (delBtn) {
-                delBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    moveToTrash(file.name);
-                });
-            }
-        }
-
-        if (file.type === 'folder') {
-            item.addEventListener('click', () => renderExplorer(file.target));
-        } else {
+    if (typeof FSCore !== 'undefined' && FSCore.getFiles) {
+        FSCore.getFiles(folderKey).forEach(file => {
+            const item = document.createElement('div');
+            item.className = 'file-grid-item';
+            item.innerHTML = `<div style="font-size:24px;">🗒️</div><div>${file.name}</div>`;
             item.addEventListener('click', () => {
                 openedFileName = file.name;
-                document.getElementById('notepadText').value = file.content || "";
-                document.getElementById('notepad-title').innerText = `📝 Xed — ${file.name}`;
-                
-                const runBtn = document.getElementById('btn-run-code');
-                if (file.name.endsWith('.html')) {
-                    if (runBtn) runBtn.style.display = 'inline';
-                } else {
-                    if (runBtn) runBtn.style.display = 'none';
-                }
-                openWindow('notepad');
+                const txtArea = document.getElementById('notepad-textarea');
+                const nTitle = document.getElementById('notepad-window-title');
+                if (txtArea) txtArea.value = file.content || "";
+                if (nTitle) nTitle.innerText = `${file.name} — Редактор скриптов`;
+                openWindow('win-window-notepad');
             });
+            view.appendChild(item);
+        });
+    }
+}
+// 6. НЕУБИВАЕМЫЙ ПОТОКОВЫЙ ДВИЖОК ОКОН NEBULA GLASS
+function openWindow(id) {
+    const win = document.getElementById(id);
+    if (win) { win.style.display = 'flex'; focusWindow(win); }
+    const tIconId = id.replace('win-window-', 'taskbar-');
+    const tIcon = document.getElementById(tIconId);
+    if (tIcon) tIcon.classList.add('active');
+}
+
+function closeWindow(id) {
+    const win = document.getElementById(id);
+    if (win) win.style.display = 'none';
+    const tIconId = id.replace('win-window-', 'taskbar-');
+    const tIcon = document.getElementById(tIconId);
+    if (tIcon) tIcon.classList.remove('active');
+}
+
+function focusWindow(win) {
+    document.querySelectorAll('.metro-window').forEach(w => w.style.zIndex = '10');
+    win.style.zIndex = '100';
+}
+
+function toggleMaximize(id) {
+    const win = document.getElementById(id);
+    if (win) win.classList.toggle('maximized');
+}
+
+// 7. СЛУЖБА ПЕРЕТАСКИВАНИЯ ОКОН (POINTER DRAG ENGINE — МЫШЬ И ТАЧ GALAXY А14)
+function initWindowDrag(headerId, winId) {
+    const header = document.getElementById(headerId);
+    const win = document.getElementById(winId);
+    if (!header || !win) return;
+
+    let isDragging = false;
+    let currentX, currentY, initialX, initialY;
+    let xOffset = 0, yOffset = 0;
+
+    header.addEventListener('mousedown', dragStart);
+    header.addEventListener('touchstart', dragStart, { passive: true });
+
+    function dragStart(e) {
+        if (win.classList.contains('maximized')) return;
+        focusWindow(win);
+        if (e.type === 'touchstart') {
+            initialX = e.touches[0].clientX - xOffset;
+            initialY = e.touches[0].clientY - yOffset;
+        } else {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
         }
-        view.appendChild(item);
-    });
-}
-
-function moveToTrash(filename) {
-    const fileList = FSCore.getFiles(currentFolder);
-    const targetFile = fileList.find(f => f.name === filename);
-    if (!targetFile) return;
-
-    trashContainer.push({ ...targetFile, originalFolder: currentFolder });
-    FSCore.data[currentFolder] = FSCore.data[currentFolder].filter(f => f.name !== filename);
-    FSCore.save();
-    
-    renderExplorer(currentFolder);
-    renderTrashView();
-    alert(`Файл "${filename}" успешно отправлен в Корзину.`);
-}
-// Отрисовка файлов внутри окна Корзины
-function renderTrashView() {
-    const trashView = document.getElementById('trashFileView');
-    if (!trashView) return;
-    trashView.innerHTML = '';
-
-    if (trashContainer.length === 0) {
-        trashView.innerHTML = '<div style="color:#a4a9b6; padding:15px; font-size:12px;">Корзина пуста</div>';
-        return;
+        if (e.target === header || header.contains(e.target)) { isDragging = true; }
     }
 
-    trashContainer.forEach((file, index) => {
-        const item = document.createElement('div');
-        item.className = 'file-item';
-        item.innerHTML = `<div style="font-size:32px; opacity:0.6;">🗑️</div><p>${file.name}</p>` +
-                         `<button class="file-delete-btn" style="background:#4caf50;" title="Восстановить">↺</button>`;
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag, { passive: false });
+    document.addEventListener('mouseup', dragEnd);
+    document.addEventListener('touchend', dragEnd);
+
+    function drag(e) {
+        if (!isDragging) return;
+        if (e.cancelable) e.preventDefault();
         
-        const restoreBtn = item.querySelector('.file-delete-btn');
-        if (restoreBtn) {
-            restoreBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const origFolder = file.originalFolder;
-                if (!FSCore.data[origFolder]) FSCore.data[origFolder] = [];
-                
-                FSCore.data[origFolder].push({ name: file.name, type: 'file', content: file.content });
-                FSCore.save();
-                
-                trashContainer = trashContainer.filter((_, i) => i !== index);
-                renderTrashView();
-                renderExplorer(currentFolder);
-                alert(`Файл "${file.name}" восстановлен.`);
-            });
-        }
-        trashView.appendChild(item);
-    });
-}
-
-function startSystemClock() {
-    const clockEl = document.getElementById('system-clock');
-    if (!clockEl) return;
-    
-    setInterval(() => {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        const dateStr = now.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        clockEl.innerText = timeStr;
-        clockEl.title = dateStr;
-    }, 1000);
-}
-
-function initBatteryStatus() {
-    const batEl = document.getElementById('battery-status');
-    if (!batEl) return;
-
-    if (navigator.getBattery) {
-        navigator.getBattery().then(battery => {
-            function updateAllBatteryInfo() {
-                const level = Math.round(battery.level * 100);
-                const charging = battery.charging ? " (Заряжается ⚡)" : "";
-                batEl.innerText = `🔋 Статус питания: ${level}%${charging}`;
-            }
-            updateAllBatteryInfo();
-            battery.addEventListener('levelchange', updateAllBatteryInfo);
-            battery.addEventListener('chargingchange', updateAllBatteryInfo);
-        });
-    } else {
-        batEl.innerText = "🔋 Статус питания: 100% (Внешний источник)";
-    }
-}
-function checkSystemAuth() {
-    const savedPassword = localStorage.getItem('wintux_sys_pwd');
-    const authScreen = document.getElementById('wintux-auth-screen');
-    const titleEl = document.getElementById('auth-title');
-    
-    if (!authScreen) return;
-    authScreen.style.display = 'flex';
-
-    if (!savedPassword) {
-        if (titleEl) titleEl.innerText = "Создание пароля Wintux";
-        const pwdInput = document.getElementById('auth-password-input');
-        if (pwdInput) pwdInput.placeholder = "Придумайте пароль...";
-    } else {
-        if (titleEl) titleEl.innerText = "Вход в Wintux OS";
-        const pwdInput = document.getElementById('auth-password-input');
-        if (pwdInput) pwdInput.placeholder = "Введите пароль...";
-    }
-}
-
-function submitAuthPassword() {
-    const inputEl = document.getElementById('auth-password-input');
-    const errorEl = document.getElementById('auth-error-msg');
-    const authScreen = document.getElementById('wintux-auth-screen');
-    const savedPassword = localStorage.getItem('wintux_sys_pwd');
-    
-    if (!inputEl) return;
-    const value = inputEl.value.trim();
-
-    if (!value) {
-        alert("Пароль не может быть пустым!");
-        return;
-    }
-
-    if (!savedPassword) {
-        localStorage.setItem('wintux_sys_pwd', value);
-        alert("Пароль успешно создан! Запомните его.");
-        if (errorEl) errorEl.style.display = 'none';
-        if (authScreen) authScreen.style.display = 'none';
-        playSystemLogin();
-    } else {
-        if (value === savedPassword) {
-            if (errorEl) errorEl.style.display = 'none';
-            if (authScreen) authScreen.style.display = 'none';
-            inputEl.value = '';
-            playSystemLogin();
+        if (e.type === 'touchmove') {
+            currentX = e.touches[0].clientX - initialX;
+            currentY = e.touches[0].clientY - initialY;
         } else {
-            if (errorEl) {
-                errorEl.style.display = 'block';
-                errorEl.innerText = "Неверный пароль! Доступ заблокирован.";
-            }
-            inputEl.value = '';
+            currentX = e.clientX - initialX;
+            currentY = e.clientY - initialY;
         }
+
+        xOffset = currentX;
+        yOffset = currentY;
+        win.style.transform = `translate3d(${currentX}px, ${currentY}px, 0px)`;
     }
+
+    function dragEnd() { isDragging = false; }
 }
 
-function playSystemLogin() {
-    const audio = document.getElementById('login-sound');
-    if (audio) {
-        audio.play().catch(e => console.log("Аудио заблокировано до клика"));
-    }
+function changeDesktopWallpaper(imgSrc) {
+    const desktop = document.getElementById('desktop');
+    if (!desktop) return;
+    desktop.style.backgroundImage = `url('${imgSrc}')`;
+    localStorage.setItem('aura_wallpaper', imgSrc);
 }
-
-function triggerSystemShutdown() {
-    const plymouth = document.getElementById('plymouth-screen');
-    const statusText = document.getElementById('plymouth-status');
-    const powerBtn = document.getElementById('btn-boot-pc');
-    const startMenu = document.getElementById('start-menu');
-    const logoutDlg = document.getElementById('mint-logout-dialog');
-    
-    if (startMenu) startMenu.classList.remove('open');
-    if (logoutDlg) logoutDlg.style.display = 'none';
-    if (!plymouth) return;
-
-    plymouth.style.display = 'flex';
-    if (statusText) statusText.innerText = "Завершение процессов Wintux OS... Отключение ядер GPU Booster...";
-    if (powerBtn) powerBtn.style.display = 'none';
-    
-    setTimeout(() => {
-        if (statusText) statusText.innerText = "Система выключена (wintux_pc halted).";
-        const spinner = plymouth.querySelector('.plymouth-spinner');
-        if (spinner) spinner.style.display = 'none';
-        if (powerBtn) powerBtn.style.display = 'block';
-    }, 3000);
-}
-
-function triggerSystemBoot() {
-    const plymouth = document.getElementById('plymouth-screen');
-    const statusText = document.getElementById('plymouth-status');
-    const powerBtn = document.getElementById('btn-boot-pc');
-    
-    if (!plymouth) return;
-    if (powerBtn) powerBtn.style.display = 'none';
-
-    const spinner = plymouth.querySelector('.plymouth-spinner');
-    if (spinner) spinner.style.display = 'block';
-
-    let stages = [
-        "Инициализация ядра Wintux Core 2026...",
-        "Проверка секторов LocalStorage (nemo_fs)... OK",
-        "Запуск утилит GPU Booster и разгона NVIDIA...",
-        "Синхронизация с базой заметок Wintux Notes..."
-    ];
-
-    let currentStage = 0;
-    const interval = setInterval(() => {
-        if (currentStage < stages.length) {
-            if (statusText) statusText.innerText = stages[currentStage];
-            currentStage++;
-        } else {
-            clearInterval(interval);
-            plymouth.style.display = 'none';
-            checkSystemAuth();
-        }
-    }, 1000);
-}
-// ГЛОБАЛЬНЫЙ ЗАПУСК ВСЕХ ОБРАБОТЧИКОВ И ИНИЦИАЛИЗАЦИЯ WINTUX
+// 8. ГЛОБАЛЬНЫЙ СТАРТ ВСЕЙ СРЕДЫ DOM INTERFACE
 document.addEventListener('DOMContentLoaded', () => {
-    // Безопасный вызов загрузки ядра только после полной готовности DOM
-    triggerSystemBoot();
+    runWindowsBootSequence();
+    initWindowsClock();
+    initWindowsBattery();
 
-    const submitAuthBtn = document.getElementById('btn-submit-auth');
-    if (submitAuthBtn) submitAuthBtn.addEventListener('click', submitAuthPassword);
-    
-    const authInput = document.getElementById('auth-password-input');
-    if (authInput) {
-        authInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') submitAuthPassword(); });
+    // Авторизация Aura ID в один клик
+    const btnAuraLogin = document.getElementById('btn-aura-login');
+    const welcomeScreen = document.getElementById('aura-welcome-screen');
+    if (btnAuraLogin && welcomeScreen) {
+        btnAuraLogin.addEventListener('click', () => {
+            welcomeScreen.style.transform = 'scale(1.2)';
+            welcomeScreen.style.opacity = '0';
+            setTimeout(() => welcomeScreen.style.display = 'none', 300);
+        });
     }
 
-    const bootBtn = document.getElementById('btn-boot-pc');
-    if (bootBtn) bootBtn.addEventListener('click', () => {
-        const pScreen = document.getElementById('plymouth-screen');
-        if (pScreen) {
-            const spinner = pScreen.querySelector('.plymouth-spinner');
-            if (spinner) spinner.style.display = 'block';
-        }
-        triggerSystemBoot();
+    // Панель Aura Grid (системное меню старта)
+    const startBtn = document.getElementById('win-start-btn');
+    const startMenu = document.getElementById('aura-start-menu');
+    if (startBtn && startMenu) {
+        startBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startMenu.style.bottom = startMenu.style.bottom === '44px' ? '-550px' : '44px';
+        });
+        document.addEventListener('click', () => { if (startMenu) startMenu.style.bottom = '-550px'; });
+    }
+
+    const btnAuraShutdown = document.getElementById('btn-aura-shutdown');
+    if (btnAuraShutdown) btnAuraShutdown.addEventListener('click', () => { if(confirm("Выключить ядро AuraOS?")) location.reload(); });
+
+    // Поиск Edge в Aura Web через DuckDuckGo без CORS-блоков
+    const btnBrowserGo = document.getElementById('browser-go-btn');
+    const inputBrowserUrl = document.getElementById('browser-url-input');
+    const frameBrowser = document.getElementById('browser-frame-core');
+    if (btnBrowserGo && inputBrowserUrl && frameBrowser) {
+        btnBrowserGo.addEventListener('click', () => {
+            let url = inputBrowserUrl.value.trim();
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://duckduckgo.com' + encodeURIComponent(url);
+            } else if (url.includes('duckduckgo.com') && !url.includes('html=1')) {
+                url += '&html=1';
+            }
+            frameBrowser.src = url;
+            inputBrowserUrl.value = url;
+        });
+    }
+
+    // Тюнинг обоев пространства Canvas
+    document.querySelectorAll('.wp-select-img').forEach(img => {
+        img.addEventListener('click', (e) => {
+            document.querySelectorAll('.wp-select-img').forEach(i => i.style.borderColor = 'transparent');
+            e.target.style.borderColor = '#a347ff';
+            changeDesktopWallpaper(e.target.src);
+        });
     });
 
-    // Обработчики кнопок твоего разгонного GPU Booster
-    const btnTurbo = document.getElementById('btn-booster-turbo');
-    const btnNormal = document.getElementById('btn-booster-normal');
-    if (btnTurbo) btnTurbo.addEventListener('click', () => wintuxGPUBooster.setMode("TURBO"));
-    if (btnNormal) btnNormal.addEventListener('click', () => wintuxGPUBooster.setMode("NORMAL"));
-
-    // Автозагрузка и автосохранение твоих личных Wintux Quick Notes
-    const quickNotesArea = document.getElementById('quickNotesText');
-    if (quickNotesArea) {
-        quickNotesArea.value = localStorage.getItem('wintux_quick_notes_data') || "";
-        quickNotesArea.addEventListener('input', () => {
-            localStorage.setItem('wintux_quick_notes_data', quickNotesArea.value);
+    const btnWpApply = document.getElementById('btn-wp-apply');
+    if (btnWpApply) {
+        btnWpApply.addEventListener('click', () => {
+            const url = document.getElementById('wp-custom-url').value.trim();
+            if (url) { changeDesktopWallpaper(url); alert("Пространство Canvas перенастроено!"); }
         });
     }
 
-    const startPowerBtn = document.getElementById('start-power-btn');
-    const logoutDlg = document.getElementById('mint-logout-dialog');
-    const startMenu = document.getElementById('start-menu');
-
-    if (startPowerBtn && logoutDlg) {
-        startPowerBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (startMenu) startMenu.classList.remove('open');
-            logoutDlg.style.display = 'flex';
-        });
-    }
-
-    const dlgCancel = document.getElementById('dlg-btn-cancel');
-    if (dlgCancel && logoutDlg) dlgCancel.addEventListener('click', () => logoutDlg.style.display = 'none');
-
-    const dlgLock = document.getElementById('dlg-btn-lock');
-    if (dlgLock && logoutDlg) {
-        dlgLock.addEventListener('click', () => {
-            logoutDlg.style.display = 'none';
-            checkSystemAuth();
-        });
-    }
-
-    const dlgReboot = document.getElementById('dlg-btn-reboot');
-    if (dlgReboot) {
-        dlgReboot.addEventListener('click', () => {
-            if (logoutDlg) logoutDlg.style.display = 'none';
-            triggerSystemBoot();
-        });
-    }
-
-    const dlgShutdown = document.getElementById('dlg-btn-shutdown');
-    if (dlgShutdown) dlgShutdown.addEventListener('click', triggerSystemShutdown);
-
-    // Привязка ярлыков, панели задач и меню Пуск Wintux
-    const shortcuts = {
-        'shortcut-explorer': 'explorer', 'shortcut-terminal': 'terminal',
-        'shortcut-notepad': 'notepad', 'shortcut-booster': 'booster-window',
-        'shortcut-quick-notes': 'quick-notes-window', 'shortcut-cs': 'cs',
-        'shortcut-calc': 'calc', 'shortcut-trash': 'trash-window',
-        'taskbar-explorer': 'explorer', 'taskbar-terminal': 'terminal',
-        'taskbar-notepad': 'notepad', 'taskbar-booster': 'booster-window',
-        'taskbar-quick-notes': 'quick-notes-window', 'taskbar-cs': 'cs',
-        'taskbar-calc': 'calc', 'start-app-explorer': 'explorer',
-        'start-app-terminal': 'terminal', 'start-app-notepad': 'notepad',
-        'start-app-cs': 'cs', 'start-app-calc': 'calc'
+    // Мапинг ярлыков и чистой панели задач без подписей
+    const winApps = {
+        'shortcut-pc': 'win-window-pc', 'taskbar-pc': 'win-window-pc', 'start-app-pc': 'win-window-pc',
+        'shortcut-cmd': 'win-window-cmd', 'taskbar-cmd': 'win-window-cmd', 'start-app-cmd': 'win-window-cmd',
+        'shortcut-browser': 'win-window-browser', 'taskbar-browser': 'win-window-browser', 'start-app-browser': 'win-window-browser',
+        'shortcut-cs': 'win-window-cs', 'taskbar-cs': 'win-window-cs', 'start-app-cs': 'win-window-cs',
+        'shortcut-wallpaper': 'win-window-wallpaper', 'start-app-wallpaper': 'win-window-wallpaper'
     };
-    
-    for (let id in shortcuts) {
+    for (let id in winApps) {
         const el = document.getElementById(id);
-        if (el) el.addEventListener('click', () => openWindow(shortcuts[id]));
+        if (el) el.addEventListener('click', () => { openWindow(winApps[id]); });
     }
+
+    // Автоматический мобильный тач-пад CS 1.6 под Samsung Galaxy A14 твоего друга
     const csShortcut = document.getElementById('shortcut-cs');
     if (csShortcut) {
         csShortcut.addEventListener('click', () => {
             if (window.innerWidth <= 768) {
-                const helper = document.getElementById('cs-mobile-touch-helper');
+                const helper = document.getElementById('cs-touch-helper');
                 if (helper) helper.style.display = 'block';
-                const csWin = document.getElementById('cs');
+                const csWin = document.getElementById('win-window-cs');
                 if (csWin) csWin.classList.add('maximized');
             }
         });
     }
 
-    const startBtn = document.getElementById('start-menu-btn');
-    if (startBtn && startMenu) {
-        startBtn.addEventListener('click', (e) => { e.stopPropagation(); startMenu.classList.toggle('open'); });
-        document.addEventListener('click', () => startMenu.classList.remove('open'));
-    }
-
-    ['explorer', 'notepad', 'terminal', 'cs', 'web-viewer', 'calc', 'trash-window', 'booster-window', 'quick-notes-window'].forEach(id => {
+    ['pc', 'cmd', 'cs', 'browser', 'wallpaper'].forEach(id => {
         const closeBtn = document.getElementById('close-' + id);
-        if (closeBtn) closeBtn.addEventListener('click', () => closeWindow(id));
+        if (closeBtn) closeBtn.addEventListener('click', () => closeWindow('win-window-' + id));
     });
-
     document.querySelectorAll('.max-btn').forEach(btn => {
         btn.addEventListener('click', (e) => toggleMaximize(e.target.getAttribute('data-window')));
     });
 
-    const clockBtn = document.getElementById('system-clock');
-    const settingsPanel = document.getElementById('quick-settings');
-    if (clockBtn && settingsPanel) {
-        clockBtn.addEventListener('click', (e) => { e.stopPropagation(); settingsPanel.classList.toggle('open'); });
-        document.addEventListener('click', () => settingsPanel.classList.remove('open'));
-        settingsPanel.addEventListener('click', (e) => e.stopPropagation());
-    }
+    const btnDriveC = document.getElementById('explorer-drive-c');
+    if (btnDriveC) btnDriveC.addEventListener('click', () => renderExplorerView('documents'));
+    const btnRoot = document.getElementById('explorer-btn-root');
+    if (btnRoot) btnRoot.addEventListener('click', () => renderExplorerView('root'));
 
-    document.querySelectorAll('.theme-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const bgType = e.target.getAttribute('data-bg');
-            if (bgType === 'mint') document.body.style.background = 'radial-gradient(circle at 50% 30%, #2b3a22 0%, #141910 60%, #080a06 100%)';
-            if (bgType === 'dark') document.body.style.background = 'radial-gradient(circle at 50% 30%, #14161d 0%, #0b0c10 60%, #020203 100%)';
-            if (bgType === 'win11') document.body.style.background = 'radial-gradient(circle at 50% 30%, #1e4570 0%, #0a1836 60%, #020714 100%)';
-            alert(`Системные обои переключены на режим: ${e.target.innerText}`);
-        });
-    });
+    // Поля ввода терминала и обработка фокуса
+    const cmdInput = document.getElementById('cmd-input');
+    const cmdHistory = document.getElementById('cmd-history');
+    const cmdClickZone = document.getElementById('win-window-cmd');
+    if (cmdClickZone && cmdInput) cmdClickZone.addEventListener('click', () => cmdInput.focus());
 
-    const saveNoteBtn = document.getElementById('btn-save-note');
-    if (saveNoteBtn) {
-        saveNoteBtn.addEventListener('click', () => {
-            const text = document.getElementById('notepadText').value;
-            let filename = openedFileName || prompt('Введите имя файла (например: index.html):', 'index.html');
-            if (filename) {
-                FSCore.createFile('documents', filename, text);
-                alert(`Файл "${filename}" успешно записан.`);
-                closeWindow('notepad');
-                renderExplorer(currentFolder);
-            }
-        });
-    }
-
-    const runCodeBtn = document.getElementById('btn-run-code');
-    if (runCodeBtn) {
-        runCodeBtn.addEventListener('click', () => {
-            const code = document.getElementById('notepadText').value;
-            const viewerFrame = document.getElementById('webViewerFrame');
-            if (viewerFrame) { viewerFrame.srcdoc = code; openWindow('web-viewer'); }
-        });
-    }
-
-    const emptyTrashBtn = document.getElementById('btn-empty-trash');
-    if (emptyTrashBtn) {
-        emptyTrashBtn.addEventListener('click', () => {
-            if (trashContainer.length === 0) return;
-            if (confirm("Вы уверены, что хотите очистить Корзину?")) {
-                trashContainer = []; renderTrashView(); alert("Корзина очищена.");
-            }
-        });
-    }
-
-    const termInput = document.getElementById('terminal-input');
-    const termHistory = document.getElementById('terminal-history');
-    const clickZone = document.getElementById('terminal-click-zone');
-    if (clickZone && termInput) clickZone.addEventListener('click', () => termInput.focus());
-
-    if (termInput && termHistory) {
-        termInput.addEventListener('keypress', (e) => {
+    if (cmdInput && cmdHistory) {
+        cmdInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
-                const rawCmd = termInput.value; termInput.value = '';
-                const userLine = document.createElement('div');
-                userLine.innerHTML = `<span style="color:#87cf3e;font-weight:bold;">user@wintux_pc:~$</span> ${rawCmd}`;
-                termHistory.appendChild(userLine);
-                const output = bashSimulator.execute(rawCmd);
-                if (output && output !== 'clear_screen') {
-                    const responseLine = document.createElement('div');
-                    responseLine.style.whiteSpace = 'pre-wrap';
-                    let formatted = output.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('[GREEN]', '<span style="color:#87cf3e;">').replaceAll('[RESET]', '</span>');
-                    responseLine.innerHTML = formatted; termHistory.appendChild(responseLine);
+                const rawCmd = cmdInput.value; cmdInput.value = '';
+                const line = document.createElement('div'); line.innerHTML = `<span style="color:#a347ff;">aura_node_admin@core:~#</span> ${rawCmd}`;
+                cmdHistory.appendChild(line);
+                const out = cmdSimulator.execute(rawCmd);
+                if (out && out !== 'cls_active') {
+                    const res = document.createElement('div'); res.style.whiteSpace = 'pre-wrap';
+                    res.innerHTML = out.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+                    cmdHistory.appendChild(res);
                 }
-                termHistory.scrollTop = termHistory.scrollHeight;
+                cmdHistory.scrollTop = cmdHistory.scrollHeight;
             }
         });
     }
 
-    const createFolderBtn = document.getElementById('btn-create-folder');
-    if (createFolderBtn) {
-        createFolderBtn.addEventListener('click', () => {
-            const name = prompt('Имя новой папки:');
-            if (name) { FSCore.createFolder(currentFolder, name); renderExplorer(currentFolder); }
-        });
-    }
-
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.addEventListener('click', (e) => renderExplorer(e.target.getAttribute('data-folder')));
-    });
-
-    ['explorer', 'notepad', 'terminal', 'cs', 'web-viewer', 'calc', 'trash-window', 'booster-window', 'quick-notes-window'].forEach(id => {
-        initDrag('header-' + id, id);
-        const winEl = document.getElementById(id);
+    // Связывание Drag-событий Pointer на заголовки окон AuraOS
+    ['pc', 'cmd', 'cs', 'browser', 'wallpaper'].forEach(id => {
+        initWindowDrag('header-' + id, 'win-window-' + id);
+        const winEl = document.getElementById('win-window-' + id);
         if (winEl) winEl.addEventListener('pointerdown', function() { focusWindow(this); });
     });
 
-    startSystemClock();
-    initBatteryStatus();
-    renderExplorer('root');
-    renderTrashView();
+    const savedWp = localStorage.getItem('aura_wallpaper');
+    if (savedWp) changeDesktopWallpaper(savedWp);
+
+    renderExplorerView('root');
 });
