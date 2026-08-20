@@ -3,6 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wintux OS — NVIDIA Extreme Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background: radial-gradient(circle at 50% 30%, #1e2616 0%, #0d110b 60%, #040503 100%); height: 100vh; overflow: hidden; margin: 0; padding: 0; position: relative;">
+
+    <!-- АУДИО-ЧИП СИСТЕМНОГО ПРИВЕТСТВИЯ WINTUX -->
+    <audio id="login-sound" src="https://wikimedia.org" preload="auto"></audio>
+
+    <!-- ЭКРАН ЗАГРУЗКИ (PLYMOUTH BOOT SPLASH) — ЗАФИКСИРОВАН НА ВЕСЬ ЭКРАН СТИЛЯМИ -->
+    <div id="plymouth-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000000; z-index: 99999; display: flex; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif;">
+        <div style="text-align: center; color: white; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+            <div style="font-size: 32px; font-weight: bold; letter-spacing: 2px; color: #87cf3e; text-shadow: 0 0 15px rgba(135,207,62,0.6);">💚 WINTUX OS Extreme</div>
+            <div style="width: 45px; height: 40px; border: 4px solid rgba(255,255,255,0.1); border-top-color: #87cf3e; border-radius: 50%; animation: spin 1s linear infinite;" class="plymouth-spinner"></div>
+            <div id="plymouth-status" style="font-size: 13px; color: #a4a9b6; font-family: monospace;">Инициализация модулей разгона NVIDIA...</div>
+            <button id="btn-boot-pc" style="display: none; padding: 12px 28px; background: #e54c4c; color: white; border: none; border-radius: 24px; font-size: 14px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 15px rgba(229,76,76,0.4);" class="boot-power-btn">⏻ Включить ПК</button>
+        </div>
+    </div>
+
+    <!-- ЭКРАН ВВОДА ПАРОЛЯ (WINTUX LOCKSCREEN) — ДИЗАЙН И ФОКУС ПО ЦЕНТРУ -->
+    <div id="wintux-auth-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(10, 15, 8, 0.88); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); z-index: 99990; display: none; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif;">
+        <div style="text-align: center; color: white; width: 290px; display: flex; flex-direction: column; align-items: center; gap: 18px;">
+            <div style="width: 85px; height: 80px; background: #87cf3e; color: #111; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 38px; font-weight: bold; box-shadow: 0 4px 20px rgba(135,207,62,0.3);">W</div>
+            <h2 id="auth-title" style="font-size: 20px; font-weight: 600; margin: 0;">Вход в Wintux OS</h2>
+            <div style="display: flex; width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;" class="auth-input-group">
+                <input type="password" id="auth-password-input" placeholder="Введите пароль..." style="flex: 1; background: transparent; border: none; outline: none; padding: 12px; color: white; font-size: 14px; text-align: center;">
+                <button id="btn-submit-auth" style="background: #87cf3e; border: none; color: #111; padding: 0 16px; cursor: pointer; font-weight: bold;">👉</button>
+            </div>
+            <p id="auth-error-msg" style="color: #e54c4c; font-size: 13px; margin: 0; font-weight: bold; display: none;">Неверный пароль!</p>
+        </div>
+    </div>
+
+    <!-- СИСТЕМНОЕ МЕНЮ ВЫКЛЮЧЕНИЯ LINUX MINT -->
+    <div id="mint-logout-dialog" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 100000; display: none; align-items: center; justify-content: center; font-family: 'Segoe UI', sans-serif;">
+        <div style="background: #2b303b; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; width: 320px; padding: 20px; color: white; box-shadow: 0 15px 40px rgba(0,0,0,0.6);">
+            <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 6px 0; color: #fff;">Завершение сеанса Wintux</h3>
+            <p style="font-size: 12px; color: #a4a9b6; margin: 0 0 20px 0;">Выберите необходимое действие для wintux_pc:</p>
+            <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;" class="mint-dialog-buttons">
+                <button class="mint-dlg-btn lock" id="dlg-btn-lock" style="width: 100%; padding: 10px; border: none; border-radius: 4px; text-align: left; font-size: 13px; font-weight: 600; cursor: pointer; color: white; background: #383c4a; display: flex; align-items: center; gap: 10px;">🔒 Блокировка</button>
+                <button class="mint-dlg-btn reboot" id="dlg-btn-reboot" style="width: 100%; padding: 10px; border: none; border-radius: 4px; text-align: left; font-size: 13px; font-weight: 600; cursor: pointer; color: white; background: #383c4a; display: flex; align-items: center; gap: 10px;">🔄 Перезагрузка</button>
+                <button class="mint-dlg-btn shutdown" id="dlg-btn-shutdown" style="width: 100%; padding: 10px; border: none; border-radius: 4px; text-align: left; font-size: 13px; font-weight: 600; cursor: pointer; color: white; background: #d9534f; display: flex; align-items: center; gap: 10px;">⏻ Выключение</button>
+            </div>
+            <button class="mint-dlg-cancel" id="dlg-btn-cancel" style="width: 100%; padding: 8px; background: transparent; border: 1px solid #434855; color: #cfced6; border-radius: 4px; cursor: pointer; font-size: 12px;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- ГИБРИДНЫЙ РАБОЧИЙ СТОЛ WINTUX OS -->
+    <div class="desktop" id="desktop-grid" style="height: calc(100vh - 48px); padding: 15px; display: flex; flex-direction: column; gap: 15px; align-content: flex-start; flex-wrap: wrap;">
+        <div class="shortcut" id="shortcut-explorer" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">📂<br>Мой Компьютер</div>
+        <div class="shortcut" id="shortcut-terminal" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">💻<br>Консоль Bash</div>
+        <div class="shortcut" id="shortcut-notepad" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">📝<br>Кодинг Xed</div>
+        <div class="shortcut" id="shortcut-booster" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">🚀<br>GPU Booster</div>
+        <div class="shortcut" id="shortcut-quick-notes" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">📌<br>Wintux Notes</div>
+        <div class="shortcut" id="shortcut-cs" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">🔫<br>CS 1.6 Mobile</div>
+        <div class="shortcut" id="shortcut-calc" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">🧮<br>Калькулятор</div>
+        <div class="shortcut" id="shortcut-trash" style="width: 90px; text-align: center; cursor: pointer; color: white; font-size: 12px;">🗑️<br>Корзина</div>
+    </div>
+
+    <!-- ШТОРКА МОНИТОРИНГА РЕСУРСОВ СИСТЕМЫ -->
+    <div id="quick-settings" class="quick-settings-panel">
+        <h3>Диспетчер ресурсов Wintux</h3>
+        <div class="settings-status-box">
+            <div id="battery-status">🔋 Статус питания: Загрузка...</div>
+            <div id="gpu-status">💚 Видеокарта: Опрос шины PCIe...</div>
+            <div id="ram-status">⚡ Загрузка ОЗУ: 1.2 GB / 16 GB (Стабильно)</div>
+        </div>
+        <div class="settings-section-title">Кастомизация стола</div>
+        <div class="theme-buttons">
+            <button class="theme-btn" data-bg="mint">🌿 Mint Classic</button>
+            <button class="theme-btn" data-bg="dark">🖤 Cyberpunk</button>
+            <button class="theme-btn" data-bg="win11">🔷 Neon Win11</button>
+        </div>
+    </div>
+    <!-- ГИБРИДНОЕ МЕНЮ СТАРТ WINTUX EXTREME -->
+    <div id="start-menu" class="start-menu">
+        <input type="text" class="start-search" placeholder="Быстрый поиск в системе Wintux...">
+        <div class="start-content-layout">
+            <div class="start-mint-sidebar">
+                <div class="mint-cat-item active" data-cat="all">💚 Избранное</div>
+                <div class="mint-cat-item" data-cat="system">⚙️ Система</div>
+            </div>
+            <div class="start-apps-grid" id="start-apps-container">
+                <div class="start-app-item" id="start-app-explorer">
+                    <div style="font-size: 24px;">📂</div>
+                    <span>Проводник Nemo</span>
+                </div>
+                <div class="start-app-item" id="start-app-terminal">
+                    <div style="font-size: 24px;">💻</div>
+                    <span>Консоль Bash</span>
+                </div>
+                <div class="start-app-item" id="start-app-notepad">
+                    <div style="font-size: 24px;">📝</div>
+                    <span>Кодинг Xed</span>
+                </div>
+                <div class="start-app-item" id="start-app-booster">
+                    <div style="font-size: 24px;">🚀</div>
+                    <span>GPU Booster</span>
+                </div>
+                <div class="start-app-item" id="start-app-quick-notes">
+                    <div style="font-size: 24px;">📌</div>
+                    <span>Wintux Notes</span>
+                </div>
+                <div class="start-app-item" id="start-app-cs">
+                    <div style="font-size: 24px;">🔫</div>
+                    <span>CS 1.6 Mobile</span>
+                </div>
+                <div class="start-app-item" id="start-app-calc">
+                    <div style="font-size: 24px;">🧮</div>
+                    <span>Калькулятор</span>
+                </div>
+            </div>
+        </div>
+        <div class="start-footer">
+            <div class="start-user">
+                <div class="user-avatar">W</div>
+                <span>Wintux User</span>
+            </div>
+            <div class="power-btn" id="start-power-btn" style="font-size: 20px; cursor: pointer;">⏻</div>
+        </div>
+    </div>
+
+    <!-- ОКНО: ФАЙЛОВЫЙ МЕНЕДЖЕР NEMO -->
+    <div id="explorer" class="window">
+        <div class="window-header" id="header-explorer">
+            <div class="window-title">📂 Файловый менеджер Nemo</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="explorer">🗖</button>
+                <button class="control-btn close-btn" id="close-explorer">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="explorer-layout">
+                <div class="sidebar">
+                    <div class="sidebar-item active" data-folder="root">🏠 Домашняя папка</div>
+                    <div class="sidebar-item" data-folder="documents">📁 Документы</div>
+                    <div class="sidebar-item" data-folder="images">🖼️ Изображения</div>
+                    <div class="sidebar-item" data-folder="videos">🎬 Видео</div>
+                    <div class="sidebar-item" data-folder="music">🎵 Музыка</div>
+                    <div class="sidebar-item" data-folder="downloads">📥 Загрузки</div>
+                </div>
+                <div class="explorer-main">
+                    <div class="explorer-toolbar">
+                        <button id="btn-create-folder">➕ Создать папку</button>
+                    </div>
+                    <div id="fileView" class="file-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО: РЕДАКТОР КОДА И ТЕКСТА XED -->
+    <div id="notepad" class="window">
+        <div class="window-header" id="header-notepad">
+            <div class="window-title" id="notepad-title">📝 Редактор кода Xed</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="notepad">🗖</button>
+                <button class="control-btn close-btn" id="close-notepad">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="notepad-container">
+                <div class="notepad-menu">
+                    <span id="btn-save-note">💾 Сохранить скрипт / файл</span>
+                    <span id="btn-run-code" style="margin-left:15px; color:#87cf3e; display:none; cursor:pointer; font-weight:bold;">▶ Запустить HTML-код</span>
+                </div>
+                <textarea id="notepadText" class="notepad-textarea" placeholder="Пиши свой код (HTML, CSS, JS) или текст здесь..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО: ЖИВОЙ ВЕБ-КОМПИЛЯТОР (WEB VIEWER) -->
+    <div id="web-viewer" class="window" style="width:500px; height:400px;">
+        <div class="window-header" id="header-web-viewer">
+            <div class="window-title" id="web-viewer-title">🌐 Результат компиляции кода</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="web-viewer">🗖</button>
+                <button class="control-btn close-btn" id="close-web-viewer">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <iframe id="webViewerFrame" class="browser-iframe"></iframe>
+        </div>
+    </div>
+    <!-- ОКНО: МОЩНАЯ КОНСОЛЬ BASH -->
+    <div id="terminal" class="window">
+        <div class="window-header" id="header-terminal">
+            <div class="window-title">💻 Terminal Wintux (bash)</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="terminal">🗖</button>
+                <button class="control-btn close-btn" id="close-terminal">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="terminal-container" id="terminal-click-zone">
+                <div id="terminal-history" class="terminal-history">
+                    <div>Добро пожаловать в Wintux OS Bash Engine!</div>
+                    <div>Доступны команды: <b>help</b>, <b>ls</b>, <b>mkdir</b>, <b>rm [файл]</b>, <b>clear</b>, <b>neofetch</b>, <b>nvidia-smi</b>.</div>
+                </div>
+                <div class="terminal-input-line">
+                    <span class="terminal-prompt">user@wintux_pc:~$</span>
+                    <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО ТВОЕЙ СЛУЖБЫ: WINTUX TUNING & GPU BOOSTER (УТИЛИТА РАЗГОНА) -->
+    <div id="booster-window" class="window" style="width:400px; height:450px;">
+        <div class="window-header" id="header-booster">
+            <div class="window-title">🚀 Wintux Tuning & GPU Booster v1.0</div>
+            <div class="window-controls">
+                <button class="control-btn close-btn" id="close-booster">✕</button>
+            </div>
+        </div>
+        <div class="window-body" style="background:#111; color:#fff; padding:15px; font-family:monospace; display:flex; flex-direction:column; gap:12px;">
+            <div style="border-bottom:1px solid #333; padding-bottom:8px; color:#87cf3e; font-weight:bold;">Управление разгоном видеокарты NVIDIA / Мобильной графики</div>
+            <div style="background:#1a1a1a; padding:10px; border-radius:6px; border:1px solid #333;">
+                <div>Текущий режим: <span id="booster-mode-text" style="color:#ffcc00; font-weight:bold;">STANDART</span></div>
+                <div>Частота ядра GPU: <span id="gpu-clock-text">1450 MHz</span></div>
+                <div>Скорость кулеров: <span id="gpu-fan-text">Auto (45%)</span></div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <button id="btn-booster-normal" style="width:100%; padding:8px; background:#333; color:#fff; border:1px solid #444; border-radius:4px; cursor:pointer; font-family:inherit;">🌿 Обычный режим (Энергосбережение)</button>
+                <button id="btn-booster-turbo" style="width:100%; padding:10px; background:#87cf3e; color:#111; border:none; border-radius:4px; cursor:pointer; font-weight:bold; font-family:inherit; box-shadow: 0 0 10px rgba(135,207,62,0.4);">🔥 ИГРОВОЙ РЕЖИМ: NVIDIA TURBO BOOST</button>
+            </div>
+            <div id="booster-log-box" style="flex:1; background:#050505; border:1px solid #222; border-radius:4px; padding:8px; font-size:11px; color:#888; overflow-y:auto; white-space:pre-wrap;">Система разгона Wintux готова к оптимизации...</div>
+        </div>
+    </div>
+
+    <!-- ОКНО ТВОЕЙ СЛУЖБЫ: WINTUX QUICK NOTES (ЛИЧНЫЕ ЗАМЕТКИ) -->
+    <div id="quick-notes-window" class="window" style="width:350px; height:380px;">
+        <div class="window-header" id="header-quick-notes">
+            <div class="window-title">📌 Личные заметки Wintux Notes</div>
+            <div class="window-controls">
+                <button class="control-btn close-btn" id="close-quick-notes">✕</button>
+            </div>
+        </div>
+        <div class="window-body" style="background:#fff7bd; color:#222; padding:0; display:flex; flex-direction:column; height:100%;">
+            <div style="background:#f4eb9b; padding:6px 12px; font-size:12px; color:#555; font-weight:bold; border-bottom:1px solid #e0da8b;">Быстрый блокнот Wintux (Сохраняется автоматически)</div>
+            <textarea id="quickNotesText" style="flex:1; width:100%; padding:12px; border:none; resize:none; outline:none; font-family:'Segoe UI', sans-serif; font-size:14px; background:transparent; color:#111;" placeholder="Пиши сюда свои идеи, планы или важные мысли..."></textarea>
+        </div>
+    </div>
+
+    <!-- ОКНО: COUNTER-STRIKE 1.6 С МОБИЛЬНЫМ ТАЧ-ФИКСОМ -->
+    <div id="cs" class="window">
+        <div class="window-header" id="header-cs">
+            <div class="window-title">🔫 Counter-Strike 1.6 — Игровой сервер</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="cs">🗖</button>
+                <button class="control-btn close-btn" id="close-cs">✕</button>
+            </div>
+        </div>
+        <div class="window-body" style="position: relative;">
+            <iframe id="cs-frame" class="browser-iframe" src="https://play-cs.com"></iframe>
+            <div id="cs-mobile-touch-helper" class="cs-touch-overlay" style="display: none; position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); background: rgba(135, 207, 62, 0.85); color: #111; padding: 10px 20px; border-radius: 30px; font-size: 12px; font-weight: bold; pointer-events: none; z-index: 999;">🤖 Тач-режим включен</div>
+        </div>
+    </div>
+
+    <!-- ОКНО: БЫСТРЫЙ КАЛЬКУЛЯТОР -->
+    <div id="calc" class="window" style="width:280px; height:380px;">
+        <div class="window-header" id="header-calc">
+            <div class="window-title">🧮 Калькулятор</div>
+            <div class="window-controls">
+                <button class="control-btn close-btn" id="close-calc">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="calc-container">
+                <input type="text" id="calc-display" class="calc-display" readonly value="0">
+                <div class="calc-buttons">
+                    <button class="calc-btn-item op" onclick="clearCalc()">C</button>
+                    <button class="calc-btn-item op" onclick="pressCalc('/')">/</button>
+                    <button class="calc-btn-item op" onclick="pressCalc('*')">*</button>
+                    <button class="calc-btn-item op" onclick="pressCalc('-')">-</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('7')">7</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('8')">8</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('9')">9</button>
+                    <button class="calc-btn-item op" onclick="pressCalc('+')">+</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('4')">4</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('5')">5</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('6')">6</button>
+                    <button class="calc-btn-item eq" onclick="calculateResult()">=</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('1')">1</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('2')">2</button>
+                    <button class="calc-btn-itemNum" onclick="pressCalc('3')">3</button>
+                    <button class="calc-btn-itemNum zero" onclick="pressCalc('0')">0</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОКНО: СИСТЕМНАЯ КОРЗИНА -->
+    <div id="trash-window" class="window">
+        <div class="window-header" id="header-trash">
+            <div class="window-title">🗑️ Корзина</div>
+            <div class="window-controls">
+                <button class="control-btn max-btn" data-window="trash-window">🗖</button>
+                <button class="control-btn close-btn" id="close-trash-window">✕</button>
+            </div>
+        </div>
+        <div class="window-body">
+            <div class="explorer-toolbar">
+                <button id="btn-empty-trash" style="background:#e54c4c; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">🧹 Очистить корзину</button>
+            </div>
+            <div id="trashFileView" class="file-grid"></div>
+        </div>
+    </div>
+
+    <!-- ИГРОВАЯ ПАНЕЛЬ ЗАДАЧ CINNAMON / WIN11 -->
+    <div class="taskbar">
+        <div class="taskbar-icons" id="taskbar-icons-container">
+            <div class="taskbar-icon" id="start-menu-btn">
+                <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#87cf3e"/><path d="M16 16v16h8a8 8 0 0 0 0-16zm4 4h4a4 4 0 0 1 0 8h-4z" fill="#fff"/></svg>
+            </div>
+            <div class="taskbar-icon" id="taskbar-explorer">📂</div>
+            <div class="taskbar-icon" id="taskbar-terminal">💻</div>
+            <div class="taskbar-icon" id="taskbar-notepad">📝</div>
+            <div class="taskbar-icon" id="taskbar-booster">🚀</div>
+            <div class="taskbar-icon" id="taskbar-quick-notes">📌</div>
+            <div class="taskbar-icon" id="taskbar-cs">🔫</div>
+            <div class="taskbar-icon" id="taskbar-calc">🧮</div>
+        </div>
+        
+        <div class="system-tray">
+            <div class="tray-clock" id="system-clock" title="Дата и время">00:00:00</div>
+        </div>
+    </div>
+
+    <!-- СКРИПТЫ СИСТЕМНОГО ЯДРА -->
+    <script src="fs-core.js"></script>
+    <script src="wm-core.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Wintux OS — NVIDIA & Developer Extreme Edition</title>
     <link rel="stylesheet" href="style.css">
 </head>
