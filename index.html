@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PutterOS — Ultimate Gaming & Dev Workspace</title>
+    <title>Wintux OS — Linux Mint & Windows 11 Hybrid</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- РАБОЧИЙ СТОЛ МОЩНОГО ПК -->
+    <!-- АУДИО-ЧИП СИСТЕМНОГО ПРИВЕТСТВИЯ WINTUX -->
+    <audio id="login-sound" src="https://wikimedia.org" preload="auto"></audio>
+
+    <!-- РАБОЧИЙ СТОЛ WINTUX OS -->
     <div class="desktop" id="desktop-grid">
         <div class="shortcut" id="shortcut-explorer">
             <svg viewBox="0 0 48 48"><path d="M40,12H24l-4-4H8C5.8,8,4,9.8,4,12v24c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V16C44,13.8,42.2,12,40,12z" fill="#87cf3e"/><path d="M40,16H12c-2.2,0-4,1.8-4,4v16c0,2.2,1.8,4,4,4h28c2.2,0,4-1.8,4-4V20C44,18.2,42.2,16,40,16z" fill="#9be74c"/></svg>
@@ -20,11 +23,11 @@
         </div>
         <div class="shortcut" id="shortcut-notepad">
             <svg viewBox="0 0 48 48"><path d="M36,4H12C9.8,4,8,5.8,8,8v32c0,2.2,1.8,4,4,4h24c2.2,0,4-1.8,4-4V8C40,5.8,38.2,4,36,4z" fill="#0078D4"/><path d="M14,12h20v4H14V12z M14,20h20v4H14V20z M14,28h14v4H14V28z" fill="#FFF"/></svg>
-            Кодинг & Текст
+            Кодинг Xed
         </div>
         <div class="shortcut" id="shortcut-browser">
             <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="#0288D1"/><circle cx="24" cy="24" r="8" fill="#FFF"/><path d="M24,4C13,4,4,13,4,24h8c0-6.6,5.4-12,12-12V4z" fill="#87cf3e"/><path d="M44,24c0,11-9,20-20,20v-8c6.6,0,12-5.4,12-12H44z" fill="#FBC02D"/></svg>
-            Браузер (Видео/Поиск)
+            Браузер Edge
         </div>
         <div class="shortcut" id="shortcut-cs">
             <svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="6" fill="#1b1e22"/><circle cx="24" cy="24" r="14" stroke="#e54c4c" stroke-width="3" fill="none"/><path d="M16 24h16M24 16v16" stroke="#e54c4c" stroke-width="2"/></svg>
@@ -42,12 +45,12 @@
         </div>
     </div>
 
-    <!-- ШТОРКА ЖИВОГО МОНИТОРИНГА ПК -->
+    <!-- ШТОРКА МОНИТОРИНГА РЕСУРСОВ СИСТЕМЫ -->
     <div id="quick-settings" class="quick-settings-panel">
-        <h3>Диспетчер ресурсов Путтера</h3>
+        <h3>Диспетчер ресурсов Wintux</h3>
         <div class="settings-status-box">
-            <div id="battery-status">🔋 Статус питания: Ок</div>
-            <div id="ram-status">⚡ Загрузка ОЗУ: 1.2 GB / 16 GB (Всё летает)</div>
+            <div id="battery-status">🔋 Статус питания: Загрузка...</div>
+            <div id="ram-status">⚡ Загрузка ОЗУ: 1.2 GB / 16 GB (Стабильно)</div>
         </div>
         <div class="settings-section-title">Кастомизация стола</div>
         <div class="theme-buttons">
@@ -57,29 +60,29 @@
         </div>
     </div>
 
-    <!-- ГИБРИДНОЕ МЕНЮ СТАРТ -->
+    <!-- ГИБРИДНОЕ МЕНЮ СТАРТ WINTUX -->
     <div id="start-menu" class="start-menu">
-        <input type="text" class="start-search" placeholder="Быстрый запуск программ и скриптов...">
+        <input type="text" class="start-search" placeholder="Быстрый запуск программ и скриптов Wintux...">
         <div class="start-content-layout">
             <div class="start-mint-sidebar">
-                <div class="mint-cat-item active" data-cat="all">🎮 Игры & Работы</div>
-                <div class="mint-cat-item" data-cat="system">⚙️ Система</div>
+                <div class="mint-cat-item active" data-cat="all">💚 Главная сетка</div>
+                <div class="mint-cat-item" data-cat="system">⚙️ Система Linux</div>
             </div>
             <div class="start-apps-grid" id="start-apps-container">
-                <div class="start-app-item" id="start-app-explorer"><div>📂</div><span>Проводник</span></div>
+                <div class="start-app-item" id="start-app-explorer"><div>📂</div><span>Проводник Nemo</span></div>
                 <div class="start-app-item" id="start-app-terminal"><div>💻</div><span>Консоль Bash</span></div>
-                <div class="start-app-item" id="start-app-notepad"><div>📝</div><span>Кодинг (Xed)</span></div>
-                <div class="start-app-item" id="start-app-browser"><div>🌐</div><span>Браузер Видео</span></div>
+                <div class="start-app-item" id="start-app-notepad"><div>📝</div><span>Кодинг Xed</span></div>
+                <div class="start-app-item" id="start-app-browser"><div>🌐</div><span>Браузер Edge</span></div>
                 <div class="start-app-item" id="start-app-cs"><div>🔫</div><span>CS 1.6</span></div>
                 <div class="start-app-item" id="start-app-calc"><div>🧮</div><span>Калькулятор</span></div>
             </div>
         </div>
         <div class="start-footer">
-            <div class="start-user"><div class="user-avatar">P</div><span>Putter User</span></div>
-            <div class="power-btn" onclick="alert('Перезагрузка Путтера...')">⏻</div>
+            <div class="start-user"><div class="user-avatar">W</div><span>Wintux User</span></div>
+            <div class="power-btn" onclick="alert('Завершение работы Wintux OS...')">⏻</div>
         </div>
     </div>
-    <!-- ОКНО: ПРОВОДНИК NEMO -->
+    <!-- ОКНО: ПРОДВИНУТЫЙ ПРОВОДНИК NEMO -->
     <div id="explorer" class="window">
         <div class="window-header" id="header-explorer">
             <div class="window-title">📂 Файловый менеджер Nemo</div>
@@ -108,7 +111,7 @@
         </div>
     </div>
 
-    <!-- ОКНО: РЕДАКТОР КОДА И СРЕДА РАЗРАБОТКИ XED -->
+    <!-- ОКНО: ТЕКСТОВЫЙ РЕДАКТОР И СРЕДА РАЗРАБОТКИ XED -->
     <div id="notepad" class="window">
         <div class="window-header" id="header-notepad">
             <div class="window-title" id="notepad-title">📝 Редактор кода Xed</div>
@@ -123,12 +126,12 @@
                     <span id="btn-save-note">💾 Сохранить скрипт / файл</span>
                     <span id="btn-run-code" style="margin-left:15px; color:#87cf3e; display:none; cursor:pointer; font-weight:bold;">▶ Запустить HTML-код</span>
                 </div>
-                <textarea id="notepadText" class="notepad-textarea" placeholder="Пиши свой код (HTML, CSS, JS) или текст здесь..."></textarea>
+                <textarea id="notepadText" class="notepad-textarea" placeholder="Пиши свой код (HTML, CSS, JS) или text здесь..."></textarea>
             </div>
         </div>
     </div>
 
-    <!-- ОКНО: РЕЗУЛЬТАТ КОМПИЛЯЦИИ КОДА -->
+    <!-- ОКНО: ЖИВОЙ ВЕБ-КОМПИЛЯТОР (WEB VIEWER) -->
     <div id="web-viewer" class="window" style="width:500px; height:400px;">
         <div class="window-header" id="header-web-viewer">
             <div class="window-title" id="web-viewer-title">🌐 Результат компиляции кода</div>
@@ -145,7 +148,7 @@
     <!-- ОКНО: МОЩНАЯ КОНСОЛЬ BASH -->
     <div id="terminal" class="window">
         <div class="window-header" id="header-terminal">
-            <div class="window-title">💻 Терминал Путтера (bash)</div>
+            <div class="window-title">💻 Терминал Wintux (bash)</div>
             <div class="window-controls">
                 <button class="control-btn max-btn" data-window="terminal">🗖</button>
                 <button class="control-btn close-btn" id="close-terminal">✕</button>
@@ -154,17 +157,17 @@
         <div class="window-body">
             <div class="terminal-container" id="terminal-click-zone">
                 <div id="terminal-history" class="terminal-history">
-                    <div>Добро пожаловать в PutterOS Bash Engine!</div>
+                    <div>Добро пожаловать в Wintux OS Bash Engine!</div>
                     <div>Доступны команды: <b>help</b>, <b>ls</b>, <b>mkdir</b>, <b>rm [файл]</b>, <b>clear</b>, <b>neofetch</b>.</div>
                 </div>
                 <div class="terminal-input-line">
-                    <span class="terminal-prompt">user@putter_pc:~$</span>
+                    <span class="terminal-prompt">user@wintux_pc:~$</span>
                     <input type="text" id="terminal-input" class="terminal-input" autofocus autocomplete="off">
                 </div>
             </div>
         </div>
     </div>
-        <!-- ОКНО: УМНЫЙ ПРОКСИ-БРАУЗЕР (ВЫВОД САЙТОВ И ВИДЕО) -->
+    <!-- ОКНО: УМНЫЙ ПРОКСИ-БРАУЗЕР (ВЫВОД САЙТОВ И ВИДЕО) -->
     <div id="browser" class="window">
         <div class="window-header" id="header-browser">
             <div class="window-title">🌐 Edge Proxy Pro (С поддержкой Видео)</div>
@@ -287,4 +290,3 @@
     <script src="main.js"></script>
 </body>
 </html>
-
