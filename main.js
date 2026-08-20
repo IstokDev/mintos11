@@ -431,17 +431,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btnNavigate').addEventListener('click', processSearch);
     document.getElementById('urlInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') processSearch(); });
 
-    // Инструменты Nemo (Создание папок)
-    document.getElementById('btn-create-folder').addEventListener('click', () => {
-        const name = prompt('Имя новой папки:');
-        if (name) { FSCore.createFolder(currentFolder, name); renderExplorer(currentFolder); }
-    });
-
-    // Клик по боковому меню Проводника
-    document.querySelectorAll('.sidebar-item').forEach(item => {
-        item.addEventListener('click', (e) => renderExplorer(e.target.getAttribute('data-folder')));
-    });
-
     // Пакетный менеджер apt Store для игр
     document.getElementById('btn-install-cs').addEventListener('click', () => installApp('cs', 'CS 1.6 Web', '🔫'));
     document.getElementById('btn-install-mc').addEventListener('click', () => installApp('mc', 'Minecraft Web', '📦'));
@@ -458,6 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
         frame.srcdoc = `<div style="padding:20px;font-family:sans-serif;background:#fff;height:100%;overflow-y:auto;color:#000;"><h3>Добро пожаловать в Браузер WebOS!</h3><p style="margin-top:10px;color:#555;">Система защиты ядра MintOS предотвратила сетевые CSP ошибки фреймов. Попробуйте ввести поисковый запрос <b>"новости"</b>, <b>"гугл"</b> или <b>"вики"</b> в строку выше!</p></div>`;
     }
 
+    // Первичный рендеринг диска Nemo и Корзины при старте
     renderExplorer('root');
     renderTrashView();
 });
